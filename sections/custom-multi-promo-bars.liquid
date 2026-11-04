@@ -1,10 +1,10 @@
 {%- comment -%}
-  Custom Dual Scrolling Marquee Bars
-  Provides two independent, ultra-customizable horizontal scrolling tickers.
-  Customizations for each bar:
+  Custom Scrolling Announcement Bar
+  Ultra-customizable horizontal continuous scrolling marquee ticker.
+  Features:
   - Banner size (vertical padding / height)
   - Text size (desktop & mobile)
-  - Font family (Body or Heading) & Font weight (400-800)
+  - Font family (Theme Body or Heading) & Font weight (400-800)
   - Text transform & letter spacing
   - Background color & Text/Separator color
   - Ultra-slow speed controls (10s to 240s)
@@ -13,8 +13,11 @@
 {%- endcomment -%}
 
 {%- liquid
-  assign bar_1_blocks = section.blocks | where: 'type', 'bar_1_text'
-  assign bar_2_blocks = section.blocks | where: 'type', 'bar_2_text'
+  assign bar_blocks = section.blocks | where: 'type', 'scrolling_text'
+  if bar_blocks.size == 0
+    # Fallback to old block name if merchant had blocks added previously
+    assign bar_blocks = section.blocks
+  endif
 -%}
 
 <style>
@@ -30,166 +33,81 @@
     box-sizing: border-box;
   }
 
-  /* ========================================================
-     BAR 1 STYLING
-     ======================================================== */
-  #shopify-section-{{ section.id }} .custom-sb__bar--1 {
-    --csb-bg-1: {{ section.settings.bar_1_bg }};
-    --csb-text-1: {{ section.settings.bar_1_text_color }};
-    --csb-pad-1: {{ section.settings.bar_1_padding }}px;
-    --csb-gap-1: {{ section.settings.bar_1_gap }}px;
-    --csb-fsize-desktop-1: {{ section.settings.bar_1_font_size }}px;
-    --csb-fsize-mobile-1: {{ section.settings.bar_1_font_size_mobile }}px;
-    --csb-fweight-1: {{ section.settings.bar_1_font_weight }};
-    --csb-lspacing-1: {{ section.settings.bar_1_letter_spacing }}px;
-    --csb-ttransform-1: {{ section.settings.bar_1_text_transform }};
-    --csb-speed-1: {{ section.settings.bar_1_speed }}s;
-    background-color: var(--csb-bg-1);
-    color: var(--csb-text-1);
-    padding: var(--csb-pad-1) 0;
+  #shopify-section-{{ section.id }} .custom-sb__bar {
+    --csb-bg: {{ section.settings.bar_bg }};
+    --csb-text: {{ section.settings.bar_text_color }};
+    --csb-pad: {{ section.settings.bar_padding }}px;
+    --csb-gap: {{ section.settings.bar_gap }}px;
+    --csb-fsize-desktop: {{ section.settings.bar_font_size }}px;
+    --csb-fsize-mobile: {{ section.settings.bar_font_size_mobile }}px;
+    --csb-fweight: {{ section.settings.bar_font_weight }};
+    --csb-lspacing: {{ section.settings.bar_letter_spacing }}px;
+    --csb-ttransform: {{ section.settings.bar_text_transform }};
+    --csb-speed: {{ section.settings.bar_speed }}s;
+    background-color: var(--csb-bg);
+    color: var(--csb-text);
+    padding: var(--csb-pad) 0;
     width: 100%;
     overflow: hidden;
     position: relative;
-    {%- if section.settings.bar_1_font_family == 'heading' -%}
+    {%- if section.settings.bar_font_family == 'heading' -%}
       font-family: var(--font-heading-family, inherit);
     {%- else -%}
       font-family: var(--font-body-family, inherit);
     {%- endif -%}
   }
 
-  #shopify-section-{{ section.id }} .custom-sb__bar--1 .custom-sb__track {
+  #shopify-section-{{ section.id }} .custom-sb__track {
     display: flex;
     width: max-content;
     white-space: nowrap;
     will-change: transform;
-    animation: custom-sb-scroll var(--csb-speed-1) linear infinite;
-    {%- if section.settings.bar_1_direction == 'reverse' -%}
+    animation: custom-sb-scroll var(--csb-speed) linear infinite;
+    {%- if section.settings.bar_direction == 'reverse' -%}
       animation-direction: reverse;
     {%- endif -%}
   }
 
-  {%- if section.settings.bar_1_pause_hover -%}
-    #shopify-section-{{ section.id }} .custom-sb__bar--1:hover .custom-sb__track {
+  {%- if section.settings.bar_pause_hover -%}
+    #shopify-section-{{ section.id }} .custom-sb__bar:hover .custom-sb__track {
       animation-play-state: paused;
     }
   {%- endif -%}
 
-  #shopify-section-{{ section.id }} .custom-sb__bar--1 .custom-sb__group {
+  #shopify-section-{{ section.id }} .custom-sb__group {
     display: flex;
     align-items: center;
     flex-shrink: 0;
   }
 
-  #shopify-section-{{ section.id }} .custom-sb__bar--1 .custom-sb__item {
+  #shopify-section-{{ section.id }} .custom-sb__item {
     display: inline-flex;
     align-items: center;
-    gap: var(--csb-gap-1);
-    padding: 0 calc(var(--csb-gap-1) / 2);
-    font-size: var(--csb-fsize-desktop-1);
-    font-weight: var(--csb-fweight-1);
-    letter-spacing: var(--csb-lspacing-1);
-    text-transform: var(--csb-ttransform-1);
-    color: var(--csb-text-1);
+    gap: var(--csb-gap);
+    padding: 0 calc(var(--csb-gap) / 2);
+    font-size: var(--csb-fsize-desktop);
+    font-weight: var(--csb-fweight);
+    letter-spacing: var(--csb-lspacing);
+    text-transform: var(--csb-ttransform);
+    color: var(--csb-text);
     text-decoration: none;
     line-height: 1.25;
     transition: opacity 0.2s ease;
   }
 
-  #shopify-section-{{ section.id }} .custom-sb__bar--1 .custom-sb__item:hover {
+  #shopify-section-{{ section.id }} .custom-sb__item:hover {
     opacity: 0.85;
   }
 
-  #shopify-section-{{ section.id }} .custom-sb__bar--1 .custom-sb__separator {
+  #shopify-section-{{ section.id }} .custom-sb__separator {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    color: var(--csb-text-1);
+    color: var(--csb-text);
     opacity: 0.7;
     font-size: 0.85em;
   }
 
-  /* ========================================================
-     BAR 2 STYLING
-     ======================================================== */
-  #shopify-section-{{ section.id }} .custom-sb__bar--2 {
-    --csb-bg-2: {{ section.settings.bar_2_bg }};
-    --csb-text-2: {{ section.settings.bar_2_text_color }};
-    --csb-pad-2: {{ section.settings.bar_2_padding }}px;
-    --csb-gap-2: {{ section.settings.bar_2_gap }}px;
-    --csb-fsize-desktop-2: {{ section.settings.bar_2_font_size }}px;
-    --csb-fsize-mobile-2: {{ section.settings.bar_2_font_size_mobile }}px;
-    --csb-fweight-2: {{ section.settings.bar_2_font_weight }};
-    --csb-lspacing-2: {{ section.settings.bar_2_letter_spacing }}px;
-    --csb-ttransform-2: {{ section.settings.bar_2_text_transform }};
-    --csb-speed-2: {{ section.settings.bar_2_speed }}s;
-    background-color: var(--csb-bg-2);
-    color: var(--csb-text-2);
-    padding: var(--csb-pad-2) 0;
-    width: 100%;
-    overflow: hidden;
-    position: relative;
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
-    {%- if section.settings.bar_2_font_family == 'heading' -%}
-      font-family: var(--font-heading-family, inherit);
-    {%- else -%}
-      font-family: var(--font-body-family, inherit);
-    {%- endif -%}
-  }
-
-  #shopify-section-{{ section.id }} .custom-sb__bar--2 .custom-sb__track {
-    display: flex;
-    width: max-content;
-    white-space: nowrap;
-    will-change: transform;
-    animation: custom-sb-scroll var(--csb-speed-2) linear infinite;
-    {%- if section.settings.bar_2_direction == 'reverse' -%}
-      animation-direction: reverse;
-    {%- endif -%}
-  }
-
-  {%- if section.settings.bar_2_pause_hover -%}
-    #shopify-section-{{ section.id }} .custom-sb__bar--2:hover .custom-sb__track {
-      animation-play-state: paused;
-    }
-  {%- endif -%}
-
-  #shopify-section-{{ section.id }} .custom-sb__bar--2 .custom-sb__group {
-    display: flex;
-    align-items: center;
-    flex-shrink: 0;
-  }
-
-  #shopify-section-{{ section.id }} .custom-sb__bar--2 .custom-sb__item {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--csb-gap-2);
-    padding: 0 calc(var(--csb-gap-2) / 2);
-    font-size: var(--csb-fsize-desktop-2);
-    font-weight: var(--csb-fweight-2);
-    letter-spacing: var(--csb-lspacing-2);
-    text-transform: var(--csb-ttransform-2);
-    color: var(--csb-text-2);
-    text-decoration: none;
-    line-height: 1.25;
-    transition: opacity 0.2s ease;
-  }
-
-  #shopify-section-{{ section.id }} .custom-sb__bar--2 .custom-sb__item:hover {
-    opacity: 0.85;
-  }
-
-  #shopify-section-{{ section.id }} .custom-sb__bar--2 .custom-sb__separator {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--csb-text-2);
-    opacity: 0.7;
-    font-size: 0.85em;
-  }
-
-  /* ========================================================
-     ANIMATION KEYFRAMES (HARDWARE-ACCELERATED)
-     ======================================================== */
   @keyframes custom-sb-scroll {
     0% {
       transform: translate3d(0, 0, 0);
@@ -199,47 +117,37 @@
     }
   }
 
-  /* ========================================================
-     RESPONSIVE (MOBILE)
-     ======================================================== */
   @media screen and (max-width: 768px) {
-    #shopify-section-{{ section.id }} .custom-sb__bar--1 .custom-sb__item {
-      font-size: var(--csb-fsize-mobile-1);
-    }
-    #shopify-section-{{ section.id }} .custom-sb__bar--2 .custom-sb__item {
-      font-size: var(--csb-fsize-mobile-2);
+    #shopify-section-{{ section.id }} .custom-sb__item {
+      font-size: var(--csb-fsize-mobile);
     }
   }
 </style>
 
 <div class="custom-sb__wrapper">
-
-  {%- comment -%} ========================================================
-      SCROLLING BAR 1
-      ======================================================== {%- endcomment -%}
-  {%- if section.settings.bar_1_enabled and bar_1_blocks.size > 0 -%}
+  {%- if section.settings.bar_enabled and bar_blocks.size > 0 -%}
     {%- liquid
-      # Calculate repeat factor so single items or small lists fill any widescreen seamlessly
-      assign repeat_count_1 = 6
-      if bar_1_blocks.size > 4
-        assign repeat_count_1 = 2
-      elsif bar_1_blocks.size > 2
-        assign repeat_count_1 = 4
+      # Calculate repeat count so single phrase or few items seamlessly fill wide viewports
+      assign repeat_count = 6
+      if bar_blocks.size > 4
+        assign repeat_count = 2
+      elsif bar_blocks.size > 2
+        assign repeat_count = 4
       endif
     -%}
-    <div class="custom-sb__bar custom-sb__bar--1" aria-label="Scrolling Announcement Bar 1">
+    <div class="custom-sb__bar" aria-label="Scrolling Announcement Bar">
       <div class="custom-sb__track">
         {%- comment -%} Group 1 {%- endcomment -%}
         <div class="custom-sb__group">
-          {%- for r in (1..repeat_count_1) -%}
-            {%- for block in bar_1_blocks -%}
+          {%- for r in (1..repeat_count) -%}
+            {%- for block in bar_blocks -%}
               {%- if block.settings.text != blank -%}
                 {%- if block.settings.link != blank -%}
                   <a href="{{ block.settings.link }}" class="custom-sb__item" {{ block.shopify_attributes }}>
                     <span>{{ block.settings.text }}</span>
-                    {%- if section.settings.bar_1_separator != 'none' -%}
+                    {%- if section.settings.bar_separator != 'none' -%}
                       <span class="custom-sb__separator" aria-hidden="true">
-                        {%- case section.settings.bar_1_separator -%}
+                        {%- case section.settings.bar_separator -%}
                           {%- when 'dot' -%}•
                           {%- when 'diamond' -%}◆
                           {%- when 'star' -%}★
@@ -252,9 +160,9 @@
                 {%- else -%}
                   <span class="custom-sb__item" {{ block.shopify_attributes }}>
                     <span>{{ block.settings.text }}</span>
-                    {%- if section.settings.bar_1_separator != 'none' -%}
+                    {%- if section.settings.bar_separator != 'none' -%}
                       <span class="custom-sb__separator" aria-hidden="true">
-                        {%- case section.settings.bar_1_separator -%}
+                        {%- case section.settings.bar_separator -%}
                           {%- when 'dot' -%}•
                           {%- when 'diamond' -%}◆
                           {%- when 'star' -%}★
@@ -272,15 +180,15 @@
 
         {%- comment -%} Group 2 (Continuous loop duplicate) {%- endcomment -%}
         <div class="custom-sb__group" aria-hidden="true">
-          {%- for r in (1..repeat_count_1) -%}
-            {%- for block in bar_1_blocks -%}
+          {%- for r in (1..repeat_count) -%}
+            {%- for block in bar_blocks -%}
               {%- if block.settings.text != blank -%}
                 {%- if block.settings.link != blank -%}
                   <a href="{{ block.settings.link }}" tabindex="-1" class="custom-sb__item">
                     <span>{{ block.settings.text }}</span>
-                    {%- if section.settings.bar_1_separator != 'none' -%}
+                    {%- if section.settings.bar_separator != 'none' -%}
                       <span class="custom-sb__separator">
-                        {%- case section.settings.bar_1_separator -%}
+                        {%- case section.settings.bar_separator -%}
                           {%- when 'dot' -%}•
                           {%- when 'diamond' -%}◆
                           {%- when 'star' -%}★
@@ -293,9 +201,9 @@
                 {%- else -%}
                   <span class="custom-sb__item">
                     <span>{{ block.settings.text }}</span>
-                    {%- if section.settings.bar_1_separator != 'none' -%}
+                    {%- if section.settings.bar_separator != 'none' -%}
                       <span class="custom-sb__separator">
-                        {%- case section.settings.bar_1_separator -%}
+                        {%- case section.settings.bar_separator -%}
                           {%- when 'dot' -%}•
                           {%- when 'diamond' -%}◆
                           {%- when 'star' -%}★
@@ -313,140 +221,35 @@
       </div>
     </div>
   {%- endif -%}
-
-  {%- comment -%} ========================================================
-      SCROLLING BAR 2
-      ======================================================== {%- endcomment -%}
-  {%- if section.settings.bar_2_enabled and bar_2_blocks.size > 0 -%}
-    {%- liquid
-      # Calculate repeat factor so single items or small lists fill any widescreen seamlessly
-      assign repeat_count_2 = 6
-      if bar_2_blocks.size > 4
-        assign repeat_count_2 = 2
-      elsif bar_2_blocks.size > 2
-        assign repeat_count_2 = 4
-      endif
-    -%}
-    <div class="custom-sb__bar custom-sb__bar--2" aria-label="Scrolling Announcement Bar 2">
-      <div class="custom-sb__track">
-        {%- comment -%} Group 1 {%- endcomment -%}
-        <div class="custom-sb__group">
-          {%- for r in (1..repeat_count_2) -%}
-            {%- for block in bar_2_blocks -%}
-              {%- if block.settings.text != blank -%}
-                {%- if block.settings.link != blank -%}
-                  <a href="{{ block.settings.link }}" class="custom-sb__item" {{ block.shopify_attributes }}>
-                    <span>{{ block.settings.text }}</span>
-                    {%- if section.settings.bar_2_separator != 'none' -%}
-                      <span class="custom-sb__separator" aria-hidden="true">
-                        {%- case section.settings.bar_2_separator -%}
-                          {%- when 'dot' -%}•
-                          {%- when 'diamond' -%}◆
-                          {%- when 'star' -%}★
-                          {%- when 'slash' -%}/
-                          {%- when 'dash' -%}—
-                        {%- endcase -%}
-                      </span>
-                    {%- endif -%}
-                  </a>
-                {%- else -%}
-                  <span class="custom-sb__item" {{ block.shopify_attributes }}>
-                    <span>{{ block.settings.text }}</span>
-                    {%- if section.settings.bar_2_separator != 'none' -%}
-                      <span class="custom-sb__separator" aria-hidden="true">
-                        {%- case section.settings.bar_2_separator -%}
-                          {%- when 'dot' -%}•
-                          {%- when 'diamond' -%}◆
-                          {%- when 'star' -%}★
-                          {%- when 'slash' -%}/
-                          {%- when 'dash' -%}—
-                        {%- endcase -%}
-                      </span>
-                    {%- endif -%}
-                  </span>
-                {%- endif -%}
-              {%- endif -%}
-            {%- endfor -%}
-          {%- endfor -%}
-        </div>
-
-        {%- comment -%} Group 2 (Continuous loop duplicate) {%- endcomment -%}
-        <div class="custom-sb__group" aria-hidden="true">
-          {%- for r in (1..repeat_count_2) -%}
-            {%- for block in bar_2_blocks -%}
-              {%- if block.settings.text != blank -%}
-                {%- if block.settings.link != blank -%}
-                  <a href="{{ block.settings.link }}" tabindex="-1" class="custom-sb__item">
-                    <span>{{ block.settings.text }}</span>
-                    {%- if section.settings.bar_2_separator != 'none' -%}
-                      <span class="custom-sb__separator">
-                        {%- case section.settings.bar_2_separator -%}
-                          {%- when 'dot' -%}•
-                          {%- when 'diamond' -%}◆
-                          {%- when 'star' -%}★
-                          {%- when 'slash' -%}/
-                          {%- when 'dash' -%}—
-                        {%- endcase -%}
-                      </span>
-                    {%- endif -%}
-                  </a>
-                {%- else -%}
-                  <span class="custom-sb__item">
-                    <span>{{ block.settings.text }}</span>
-                    {%- if section.settings.bar_2_separator != 'none' -%}
-                      <span class="custom-sb__separator">
-                        {%- case section.settings.bar_2_separator -%}
-                          {%- when 'dot' -%}•
-                          {%- when 'diamond' -%}◆
-                          {%- when 'star' -%}★
-                          {%- when 'slash' -%}/
-                          {%- when 'dash' -%}—
-                        {%- endcase -%}
-                      </span>
-                    {%- endif -%}
-                  </span>
-                {%- endif -%}
-              {%- endif -%}
-            {%- endfor -%}
-          {%- endfor -%}
-        </div>
-      </div>
-    </div>
-  {%- endif -%}
-
 </div>
 
 {% schema %}
 {
-  "name": "Custom Scrolling Bars",
+  "name": "Custom Scrolling Bar",
   "tag": "section",
-  "class": "section-custom-scrolling-bars",
+  "class": "section-custom-scrolling-bar",
   "settings": [
     {
-      "type": "header",
-      "content": "=== Scrolling Bar 1 Settings ==="
-    },
-    {
       "type": "checkbox",
-      "id": "bar_1_enabled",
-      "label": "Enable Scrolling Bar 1",
+      "id": "bar_enabled",
+      "label": "Enable Scrolling Bar",
       "default": true
     },
     {
       "type": "color",
-      "id": "bar_1_bg",
+      "id": "bar_bg",
       "label": "Banner Background Color",
       "default": "#1b3b22"
     },
     {
       "type": "color",
-      "id": "bar_1_text_color",
+      "id": "bar_text_color",
       "label": "Text & Separator Color",
       "default": "#ffffff"
     },
     {
       "type": "range",
-      "id": "bar_1_padding",
+      "id": "bar_padding",
       "min": 4,
       "max": 40,
       "step": 1,
@@ -456,7 +259,7 @@
     },
     {
       "type": "range",
-      "id": "bar_1_font_size",
+      "id": "bar_font_size",
       "min": 10,
       "max": 32,
       "step": 1,
@@ -466,7 +269,7 @@
     },
     {
       "type": "range",
-      "id": "bar_1_font_size_mobile",
+      "id": "bar_font_size_mobile",
       "min": 9,
       "max": 22,
       "step": 1,
@@ -476,7 +279,7 @@
     },
     {
       "type": "select",
-      "id": "bar_1_font_family",
+      "id": "bar_font_family",
       "label": "Font Family",
       "options": [
         { "value": "body", "label": "Theme Body Font" },
@@ -486,7 +289,7 @@
     },
     {
       "type": "select",
-      "id": "bar_1_font_weight",
+      "id": "bar_font_weight",
       "label": "Font Weight",
       "options": [
         { "value": "400", "label": "Normal (400)" },
@@ -499,7 +302,7 @@
     },
     {
       "type": "select",
-      "id": "bar_1_text_transform",
+      "id": "bar_text_transform",
       "label": "Text Transform",
       "options": [
         { "value": "none", "label": "Normal (As typed)" },
@@ -510,7 +313,7 @@
     },
     {
       "type": "range",
-      "id": "bar_1_letter_spacing",
+      "id": "bar_letter_spacing",
       "min": 0,
       "max": 4,
       "step": 0.5,
@@ -520,7 +323,7 @@
     },
     {
       "type": "range",
-      "id": "bar_1_speed",
+      "id": "bar_speed",
       "min": 10,
       "max": 240,
       "step": 5,
@@ -530,7 +333,7 @@
     },
     {
       "type": "select",
-      "id": "bar_1_direction",
+      "id": "bar_direction",
       "label": "Scroll Direction",
       "options": [
         { "value": "normal", "label": "Right to Left (Standard)" },
@@ -540,13 +343,13 @@
     },
     {
       "type": "checkbox",
-      "id": "bar_1_pause_hover",
+      "id": "bar_pause_hover",
       "label": "Pause on Hover",
       "default": true
     },
     {
       "type": "range",
-      "id": "bar_1_gap",
+      "id": "bar_gap",
       "min": 12,
       "max": 100,
       "step": 2,
@@ -556,7 +359,7 @@
     },
     {
       "type": "select",
-      "id": "bar_1_separator",
+      "id": "bar_separator",
       "label": "Separator Symbol",
       "options": [
         { "value": "none", "label": "None" },
@@ -567,158 +370,12 @@
         { "value": "dash", "label": "Dash (—)" }
       ],
       "default": "none"
-    },
-    {
-      "type": "header",
-      "content": "=== Scrolling Bar 2 Settings ==="
-    },
-    {
-      "type": "checkbox",
-      "id": "bar_2_enabled",
-      "label": "Enable Scrolling Bar 2",
-      "default": true
-    },
-    {
-      "type": "color",
-      "id": "bar_2_bg",
-      "label": "Banner Background Color",
-      "default": "#faf5ee"
-    },
-    {
-      "type": "color",
-      "id": "bar_2_text_color",
-      "label": "Text & Separator Color",
-      "default": "#1f3e2c"
-    },
-    {
-      "type": "range",
-      "id": "bar_2_padding",
-      "min": 4,
-      "max": 40,
-      "step": 1,
-      "unit": "px",
-      "label": "Banner Size (Vertical Padding)",
-      "default": 12
-    },
-    {
-      "type": "range",
-      "id": "bar_2_font_size",
-      "min": 10,
-      "max": 32,
-      "step": 1,
-      "unit": "px",
-      "label": "Desktop Text Size",
-      "default": 14
-    },
-    {
-      "type": "range",
-      "id": "bar_2_font_size_mobile",
-      "min": 9,
-      "max": 22,
-      "step": 1,
-      "unit": "px",
-      "label": "Mobile Text Size",
-      "default": 12
-    },
-    {
-      "type": "select",
-      "id": "bar_2_font_family",
-      "label": "Font Family",
-      "options": [
-        { "value": "body", "label": "Theme Body Font" },
-        { "value": "heading", "label": "Theme Heading Font" }
-      ],
-      "default": "heading"
-    },
-    {
-      "type": "select",
-      "id": "bar_2_font_weight",
-      "label": "Font Weight",
-      "options": [
-        { "value": "400", "label": "Normal (400)" },
-        { "value": "500", "label": "Medium (500)" },
-        { "value": "600", "label": "Semi-Bold (600)" },
-        { "value": "700", "label": "Bold (700)" },
-        { "value": "800", "label": "Extra-Bold (800)" }
-      ],
-      "default": "700"
-    },
-    {
-      "type": "select",
-      "id": "bar_2_text_transform",
-      "label": "Text Transform",
-      "options": [
-        { "value": "none", "label": "Normal (As typed)" },
-        { "value": "uppercase", "label": "UPPERCASE" },
-        { "value": "capitalize", "label": "Capitalize Each Word" }
-      ],
-      "default": "uppercase"
-    },
-    {
-      "type": "range",
-      "id": "bar_2_letter_spacing",
-      "min": 0,
-      "max": 4,
-      "step": 0.5,
-      "unit": "px",
-      "label": "Letter Spacing",
-      "default": 1.0
-    },
-    {
-      "type": "range",
-      "id": "bar_2_speed",
-      "min": 10,
-      "max": 240,
-      "step": 5,
-      "unit": "s",
-      "label": "Marquee Speed Duration (Higher = Slower)",
-      "default": 75
-    },
-    {
-      "type": "select",
-      "id": "bar_2_direction",
-      "label": "Scroll Direction",
-      "options": [
-        { "value": "normal", "label": "Right to Left (Standard)" },
-        { "value": "reverse", "label": "Left to Right" }
-      ],
-      "default": "normal"
-    },
-    {
-      "type": "checkbox",
-      "id": "bar_2_pause_hover",
-      "label": "Pause on Hover",
-      "default": true
-    },
-    {
-      "type": "range",
-      "id": "bar_2_gap",
-      "min": 12,
-      "max": 100,
-      "step": 2,
-      "unit": "px",
-      "label": "Spacing Between Items",
-      "default": 36
-    },
-    {
-      "type": "select",
-      "id": "bar_2_separator",
-      "label": "Separator Symbol",
-      "options": [
-        { "value": "none", "label": "None" },
-        { "value": "dot", "label": "Dot (•)" },
-        { "value": "diamond", "label": "Diamond (◆)" },
-        { "value": "star", "label": "Star (★)" },
-        { "value": "slash", "label": "Slash (/)" },
-        { "value": "dash", "label": "Dash (—)" }
-      ],
-      "default": "diamond"
     }
   ],
   "blocks": [
     {
-      "type": "bar_1_text",
-      "name": "Bar 1 Scrolling Item",
+      "type": "scrolling_text",
+      "name": "Scrolling Text Item",
       "settings": [
         {
           "type": "text",
@@ -732,57 +389,16 @@
           "label": "Link (Optional)"
         }
       ]
-    },
-    {
-      "type": "bar_2_text",
-      "name": "Bar 2 Scrolling Item",
-      "settings": [
-        {
-          "type": "text",
-          "id": "text",
-          "label": "Text",
-          "default": "100% Organic & Pure Desi Ghee"
-        },
-        {
-          "type": "url",
-          "id": "link",
-          "label": "Link (Optional)"
-        }
-      ]
     }
   ],
   "presets": [
     {
-      "name": "Custom Scrolling Bars",
+      "name": "Custom Scrolling Bar",
       "blocks": [
         {
-          "type": "bar_1_text",
+          "type": "scrolling_text",
           "settings": {
             "text": "Free shipping on orders over PKR 4,000"
-          }
-        },
-        {
-          "type": "bar_2_text",
-          "settings": {
-            "text": "100% Organic & Pure Desi Ghee"
-          }
-        },
-        {
-          "type": "bar_2_text",
-          "settings": {
-            "text": "Traditional Bilona Method"
-          }
-        },
-        {
-          "type": "bar_2_text",
-          "settings": {
-            "text": "Lab Tested & Certified Quality"
-          }
-        },
-        {
-          "type": "bar_2_text",
-          "settings": {
-            "text": "No Chemicals or Preservatives Added"
           }
         }
       ]
