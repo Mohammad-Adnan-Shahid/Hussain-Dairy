@@ -1,325 +1,196 @@
 {%- comment -%}
-  Custom Multi-Promo Bars Section
-  Features 4 promotional modules:
-  1. Top Announcement Bar (Static repeating strip)
-  2. Sub-Header Promo Bar (Marquee framed by '<' & '>' arrows)
-  3. Trust Badges Bar (3 columns with icons, headings, vertical divider borders)
-  4. Bottom Scrolling Bar (High-density marquee)
+  Custom Dual Scrolling Marquee Bars
+  Provides two independent, ultra-customizable horizontal scrolling tickers.
+  Customizations for each bar:
+  - Banner size (vertical padding / height)
+  - Text size (desktop & mobile)
+  - Font family (Body or Heading) & Font weight (400-800)
+  - Text transform & letter spacing
+  - Background color & Text/Separator color
+  - Ultra-slow speed controls (10s to 240s)
+  - Scroll direction & Pause on hover
+  - Item spacing gap & Separator symbol
 {%- endcomment -%}
 
 {%- liquid
-  assign sub_blocks = section.blocks | where: 'type', 'marquee_text_sub'
-  assign bottom_blocks = section.blocks | where: 'type', 'marquee_text_bottom'
+  assign bar_1_blocks = section.blocks | where: 'type', 'bar_1_text'
+  assign bar_2_blocks = section.blocks | where: 'type', 'bar_2_text'
 -%}
 
 <style>
-  #shopify-section-{{ section.id }} .custom-pbar__root {
-    --cpb-top-bg: {{ section.settings.top_bar_bg }};
-    --cpb-top-text: {{ section.settings.top_bar_text_color }};
-    --cpb-sub-bg: {{ section.settings.sub_header_bg }};
-    --cpb-sub-text: {{ section.settings.sub_header_text_color }};
-    --cpb-sub-speed: {{ section.settings.sub_header_speed }}s;
-    --cpb-trust-bg: {{ section.settings.trust_badges_bg }};
-    --cpb-trust-text: {{ section.settings.trust_badges_text_color }};
-    --cpb-trust-border: {{ section.settings.trust_badges_border_color }};
-    --cpb-bottom-bg: {{ section.settings.bottom_bar_bg }};
-    --cpb-bottom-text: {{ section.settings.bottom_bar_text_color }};
-    --cpb-bottom-speed: {{ section.settings.bottom_bar_speed }}s;
+  #shopify-section-{{ section.id }} .custom-sb__wrapper {
     width: 100%;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: inherit;
+    overflow: hidden;
   }
 
   #shopify-section-{{ section.id }} * {
     box-sizing: border-box;
   }
 
-  /* ----------------------------------------
-     1. TOP ANNOUNCEMENT BAR
-     ---------------------------------------- */
-  .custom-pbar__top {
-    background-color: var(--cpb-top-bg);
-    color: var(--cpb-top-text);
+  /* ========================================================
+     BAR 1 STYLING
+     ======================================================== */
+  #shopify-section-{{ section.id }} .custom-sb__bar--1 {
+    --csb-bg-1: {{ section.settings.bar_1_bg }};
+    --csb-text-1: {{ section.settings.bar_1_text_color }};
+    --csb-pad-1: {{ section.settings.bar_1_padding }}px;
+    --csb-gap-1: {{ section.settings.bar_1_gap }}px;
+    --csb-fsize-desktop-1: {{ section.settings.bar_1_font_size }}px;
+    --csb-fsize-mobile-1: {{ section.settings.bar_1_font_size_mobile }}px;
+    --csb-fweight-1: {{ section.settings.bar_1_font_weight }};
+    --csb-lspacing-1: {{ section.settings.bar_1_letter_spacing }}px;
+    --csb-ttransform-1: {{ section.settings.bar_1_text_transform }};
+    --csb-speed-1: {{ section.settings.bar_1_speed }}s;
+    background-color: var(--csb-bg-1);
+    color: var(--csb-text-1);
+    padding: var(--csb-pad-1) 0;
     width: 100%;
-    padding: 9px 16px;
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: 0.04em;
     overflow: hidden;
+    position: relative;
+    {%- if section.settings.bar_1_font_family == 'heading' -%}
+      font-family: var(--font-heading-family, inherit);
+    {%- else -%}
+      font-family: var(--font-body-family, inherit);
+    {%- endif -%}
   }
 
-  .custom-pbar__top-inner {
-    max-width: 1400px;
-    margin: 0 auto;
+  #shopify-section-{{ section.id }} .custom-sb__bar--1 .custom-sb__track {
+    display: flex;
+    width: max-content;
+    white-space: nowrap;
+    will-change: transform;
+    animation: custom-sb-scroll var(--csb-speed-1) linear infinite;
+    {%- if section.settings.bar_1_direction == 'reverse' -%}
+      animation-direction: reverse;
+    {%- endif -%}
+  }
+
+  {%- if section.settings.bar_1_pause_hover -%}
+    #shopify-section-{{ section.id }} .custom-sb__bar--1:hover .custom-sb__track {
+      animation-play-state: paused;
+    }
+  {%- endif -%}
+
+  #shopify-section-{{ section.id }} .custom-sb__bar--1 .custom-sb__group {
     display: flex;
     align-items: center;
-    justify-content: center;
-    text-align: center;
-    gap: 16px;
-    flex-wrap: wrap;
+    flex-shrink: 0;
   }
 
-  .custom-pbar__top-link {
-    color: inherit;
-    text-decoration: none;
+  #shopify-section-{{ section.id }} .custom-sb__bar--1 .custom-sb__item {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    gap: 12px;
+    gap: var(--csb-gap-1);
+    padding: 0 calc(var(--csb-gap-1) / 2);
+    font-size: var(--csb-fsize-desktop-1);
+    font-weight: var(--csb-fweight-1);
+    letter-spacing: var(--csb-lspacing-1);
+    text-transform: var(--csb-ttransform-1);
+    color: var(--csb-text-1);
+    text-decoration: none;
+    line-height: 1.25;
     transition: opacity 0.2s ease;
   }
 
-  .custom-pbar__top-link:hover {
+  #shopify-section-{{ section.id }} .custom-sb__bar--1 .custom-sb__item:hover {
     opacity: 0.85;
   }
 
-  .custom-pbar__top-repeater {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 24px;
-    flex-wrap: wrap;
-  }
-
-  .custom-pbar__top-dot {
-    opacity: 0.5;
-    font-size: 10px;
-    line-height: 1;
-  }
-
-  /* ----------------------------------------
-     2. SUB-HEADER PROMO BAR
-     ---------------------------------------- */
-  .custom-pbar__sub {
-    background-color: var(--cpb-sub-bg);
-    color: var(--cpb-sub-text);
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    padding: 7px 0;
-  }
-
-  .custom-pbar__sub-arrow {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 3;
-    pointer-events: none;
-    background: var(--cpb-sub-bg);
-    color: var(--cpb-sub-text);
-  }
-
-  .custom-pbar__sub-arrow--left {
-    left: 0;
-    box-shadow: 6px 0 12px -2px var(--cpb-sub-bg);
-  }
-
-  .custom-pbar__sub-arrow--right {
-    right: 0;
-    box-shadow: -6px 0 12px -2px var(--cpb-sub-bg);
-  }
-
-  .custom-pbar__sub-arrow svg {
-    width: 14px;
-    height: 14px;
-    stroke: currentColor;
-    stroke-width: 2.2;
-    fill: none;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-
-  .custom-pbar__sub-marquee-wrap {
-    width: 100%;
-    overflow: hidden;
-    position: relative;
-    padding: 0 44px;
-  }
-
-  .custom-pbar__sub-track {
-    display: flex;
-    width: max-content;
-    white-space: nowrap;
-    animation: custom-pbar-scroll-sub var(--cpb-sub-speed) linear infinite;
-    will-change: transform;
-  }
-
-  .custom-pbar__sub-track:hover {
-    animation-play-state: paused;
-  }
-
-  .custom-pbar__sub-group {
-    display: flex;
-    align-items: center;
-    flex-shrink: 0;
-  }
-
-  .custom-pbar__sub-item {
+  #shopify-section-{{ section.id }} .custom-sb__bar--1 .custom-sb__separator {
     display: inline-flex;
     align-items: center;
-    padding: 0 28px;
-    font-size: 13.5px;
-    font-weight: 600;
-    letter-spacing: 0.03em;
-    color: var(--cpb-sub-text);
-    text-decoration: none;
-    transition: opacity 0.2s ease;
-  }
-
-  .custom-pbar__sub-item:hover {
-    opacity: 0.75;
-  }
-
-  .custom-pbar__sub-separator {
-    display: inline-block;
-    margin-left: 28px;
-    opacity: 0.45;
-    font-weight: 400;
-    font-size: 11px;
-  }
-
-  @keyframes custom-pbar-scroll-sub {
-    0% {
-      transform: translate3d(0, 0, 0);
-    }
-    100% {
-      transform: translate3d(-50%, 0, 0);
-    }
-  }
-
-  /* ----------------------------------------
-     3. TRUST BADGES BAR
-     ---------------------------------------- */
-  .custom-pbar__trust {
-    background-color: var(--cpb-trust-bg);
-    color: var(--cpb-trust-text);
-    width: 100%;
-    border-top: 1px solid var(--cpb-trust-border);
-    border-bottom: 1px solid var(--cpb-trust-border);
-    padding: 16px 20px;
-  }
-
-  .custom-pbar__trust-container {
-    max-width: 1300px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .custom-pbar__trust-col {
-    flex: 1;
-    display: flex;
-    align-items: center;
     justify-content: center;
-    gap: 14px;
-    padding: 8px 18px;
-    text-align: left;
-  }
-
-  .custom-pbar__trust-col:not(:last-child) {
-    border-right: 1px solid var(--cpb-trust-border);
-  }
-
-  .custom-pbar__trust-icon-box {
-    width: 36px;
-    height: 36px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: currentColor;
-  }
-
-  .custom-pbar__trust-icon-box svg {
-    width: 28px;
-    height: 28px;
-    fill: currentColor;
-  }
-
-  .custom-pbar__trust-icon-box svg.stroke-based {
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 1.8;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-
-  .custom-pbar__trust-text {
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 1.35;
-    letter-spacing: 0.01em;
-    margin: 0;
-  }
-
-  /* ----------------------------------------
-     4. BOTTOM SCROLLING BAR
-     ---------------------------------------- */
-  .custom-pbar__bottom {
-    background-color: var(--cpb-bottom-bg);
-    color: var(--cpb-bottom-text);
-    width: 100%;
-    overflow: hidden;
-    position: relative;
-    padding: 12px 0;
-  }
-
-  .custom-pbar__bottom-track {
-    display: flex;
-    width: max-content;
-    white-space: nowrap;
-    animation: custom-pbar-scroll-bottom var(--cpb-bottom-speed) linear infinite;
-    will-change: transform;
-  }
-
-  .custom-pbar__bottom-track:hover {
-    animation-play-state: paused;
-  }
-
-  .custom-pbar__bottom-group {
-    display: flex;
-    align-items: center;
-    flex-shrink: 0;
-  }
-
-  .custom-pbar__bottom-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 20px;
-    padding: 0 20px;
-    font-size: 13.5px;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--cpb-bottom-text);
-    text-decoration: none;
-    transition: opacity 0.2s ease;
-  }
-
-  .custom-pbar__bottom-item:hover {
-    opacity: 0.8;
-  }
-
-  .custom-pbar__bottom-glyph {
-    display: inline-block;
-    font-size: 11px;
+    color: var(--csb-text-1);
     opacity: 0.7;
-    margin-left: 20px;
-    color: currentColor;
+    font-size: 0.85em;
   }
 
-  @keyframes custom-pbar-scroll-bottom {
+  /* ========================================================
+     BAR 2 STYLING
+     ======================================================== */
+  #shopify-section-{{ section.id }} .custom-sb__bar--2 {
+    --csb-bg-2: {{ section.settings.bar_2_bg }};
+    --csb-text-2: {{ section.settings.bar_2_text_color }};
+    --csb-pad-2: {{ section.settings.bar_2_padding }}px;
+    --csb-gap-2: {{ section.settings.bar_2_gap }}px;
+    --csb-fsize-desktop-2: {{ section.settings.bar_2_font_size }}px;
+    --csb-fsize-mobile-2: {{ section.settings.bar_2_font_size_mobile }}px;
+    --csb-fweight-2: {{ section.settings.bar_2_font_weight }};
+    --csb-lspacing-2: {{ section.settings.bar_2_letter_spacing }}px;
+    --csb-ttransform-2: {{ section.settings.bar_2_text_transform }};
+    --csb-speed-2: {{ section.settings.bar_2_speed }}s;
+    background-color: var(--csb-bg-2);
+    color: var(--csb-text-2);
+    padding: var(--csb-pad-2) 0;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    {%- if section.settings.bar_2_font_family == 'heading' -%}
+      font-family: var(--font-heading-family, inherit);
+    {%- else -%}
+      font-family: var(--font-body-family, inherit);
+    {%- endif -%}
+  }
+
+  #shopify-section-{{ section.id }} .custom-sb__bar--2 .custom-sb__track {
+    display: flex;
+    width: max-content;
+    white-space: nowrap;
+    will-change: transform;
+    animation: custom-sb-scroll var(--csb-speed-2) linear infinite;
+    {%- if section.settings.bar_2_direction == 'reverse' -%}
+      animation-direction: reverse;
+    {%- endif -%}
+  }
+
+  {%- if section.settings.bar_2_pause_hover -%}
+    #shopify-section-{{ section.id }} .custom-sb__bar--2:hover .custom-sb__track {
+      animation-play-state: paused;
+    }
+  {%- endif -%}
+
+  #shopify-section-{{ section.id }} .custom-sb__bar--2 .custom-sb__group {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  #shopify-section-{{ section.id }} .custom-sb__bar--2 .custom-sb__item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--csb-gap-2);
+    padding: 0 calc(var(--csb-gap-2) / 2);
+    font-size: var(--csb-fsize-desktop-2);
+    font-weight: var(--csb-fweight-2);
+    letter-spacing: var(--csb-lspacing-2);
+    text-transform: var(--csb-ttransform-2);
+    color: var(--csb-text-2);
+    text-decoration: none;
+    line-height: 1.25;
+    transition: opacity 0.2s ease;
+  }
+
+  #shopify-section-{{ section.id }} .custom-sb__bar--2 .custom-sb__item:hover {
+    opacity: 0.85;
+  }
+
+  #shopify-section-{{ section.id }} .custom-sb__bar--2 .custom-sb__separator {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--csb-text-2);
+    opacity: 0.7;
+    font-size: 0.85em;
+  }
+
+  /* ========================================================
+     ANIMATION KEYFRAMES (HARDWARE-ACCELERATED)
+     ======================================================== */
+  @keyframes custom-sb-scroll {
     0% {
       transform: translate3d(0, 0, 0);
     }
@@ -328,297 +199,70 @@
     }
   }
 
-  /* ----------------------------------------
-     RESPONSIVE (MOBILE & TABLET)
-     ---------------------------------------- */
+  /* ========================================================
+     RESPONSIVE (MOBILE)
+     ======================================================== */
   @media screen and (max-width: 768px) {
-    .custom-pbar__top {
-      font-size: 11.5px;
-      padding: 7px 12px;
+    #shopify-section-{{ section.id }} .custom-sb__bar--1 .custom-sb__item {
+      font-size: var(--csb-fsize-mobile-1);
     }
-
-    .custom-pbar__top-repeater {
-      gap: 14px;
-    }
-
-    .custom-pbar__sub {
-      padding: 6px 0;
-    }
-
-    .custom-pbar__sub-arrow {
-      width: 32px;
-    }
-
-    .custom-pbar__sub-arrow svg {
-      width: 12px;
-      height: 12px;
-    }
-
-    .custom-pbar__sub-marquee-wrap {
-      padding: 0 32px;
-    }
-
-    .custom-pbar__sub-item {
-      font-size: 12px;
-      padding: 0 16px;
-    }
-
-    .custom-pbar__sub-separator {
-      margin-left: 16px;
-    }
-
-    .custom-pbar__trust {
-      padding: 12px 14px;
-    }
-
-    .custom-pbar__trust-container {
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .custom-pbar__trust-col {
-      width: 100%;
-      padding: 8px 10px;
-      justify-content: flex-start;
-    }
-
-    .custom-pbar__trust-col:not(:last-child) {
-      border-right: none;
-      border-bottom: 1px solid var(--cpb-trust-border);
-      padding-bottom: 10px;
-    }
-
-    .custom-pbar__trust-icon-box {
-      width: 30px;
-      height: 30px;
-    }
-
-    .custom-pbar__trust-icon-box svg {
-      width: 22px;
-      height: 22px;
-    }
-
-    .custom-pbar__trust-text {
-      font-size: 13px;
-    }
-
-    .custom-pbar__bottom {
-      padding: 9px 0;
-    }
-
-    .custom-pbar__bottom-item {
-      font-size: 11.5px;
-      padding: 0 14px;
-      gap: 14px;
-    }
-
-    .custom-pbar__bottom-glyph {
-      margin-left: 14px;
-      font-size: 9px;
+    #shopify-section-{{ section.id }} .custom-sb__bar--2 .custom-sb__item {
+      font-size: var(--csb-fsize-mobile-2);
     }
   }
 </style>
 
-<div class="custom-pbar__root" data-section-id="{{ section.id }}">
+<div class="custom-sb__wrapper">
 
-  {%- comment -%} ==========================================
-      1. TOP ANNOUNCEMENT BAR
-      ========================================== {%- endcomment -%}
-  {%- if section.settings.top_bar_enabled and section.settings.top_bar_text != blank -%}
-    <aside class="custom-pbar__top" aria-label="Announcement">
-      <div class="custom-pbar__top-inner">
-        {%- if section.settings.top_bar_link != blank -%}
-          <a href="{{ section.settings.top_bar_link }}" class="custom-pbar__top-link">
-        {%- endif -%}
-
-          <div class="custom-pbar__top-repeater">
-            <span>{{ section.settings.top_bar_text }}</span>
-            {%- if section.settings.top_bar_repeat -%}
-              <span class="custom-pbar__top-dot" aria-hidden="true">•</span>
-              <span>{{ section.settings.top_bar_text }}</span>
-              <span class="custom-pbar__top-dot" aria-hidden="true">•</span>
-              <span>{{ section.settings.top_bar_text }}</span>
-            {%- endif -%}
-          </div>
-
-        {%- if section.settings.top_bar_link != blank -%}
-          </a>
-        {%- endif -%}
-      </div>
-    </aside>
-  {%- endif -%}
-
-  {%- comment -%} ==========================================
-      2. SUB-HEADER PROMO BAR
-      ========================================== {%- endcomment -%}
-  {%- if section.settings.sub_header_enabled and sub_blocks.size > 0 -%}
-    <div class="custom-pbar__sub" aria-label="Highlights">
-      <div class="custom-pbar__sub-arrow custom-pbar__sub-arrow--left" aria-hidden="true">
-        <svg viewBox="0 0 24 24">
-          <polyline points="15 18 9 12 15 6"></polyline>
-        </svg>
-      </div>
-
-      <div class="custom-pbar__sub-marquee-wrap">
-        <div class="custom-pbar__sub-track">
-          {%- comment -%} Group 1 {%- endcomment -%}
-          <div class="custom-pbar__sub-group">
-            {%- for i in (1..3) -%}
-              {%- for block in sub_blocks -%}
-                {%- if block.settings.text != blank -%}
-                  {%- if block.settings.link != blank -%}
-                    <a href="{{ block.settings.link }}" class="custom-pbar__sub-item" {{ block.shopify_attributes }}>
-                      <span>{{ block.settings.text }}</span>
-                      <span class="custom-pbar__sub-separator" aria-hidden="true">✦</span>
-                    </a>
-                  {%- else -%}
-                    <span class="custom-pbar__sub-item" {{ block.shopify_attributes }}>
-                      <span>{{ block.settings.text }}</span>
-                      <span class="custom-pbar__sub-separator" aria-hidden="true">✦</span>
-                    </span>
-                  {%- endif -%}
-                {%- endif -%}
-              {%- endfor -%}
-            {%- endfor -%}
-          </div>
-
-          {%- comment -%} Group 2 (Duplicate for continuous seamless loop) {%- endcomment -%}
-          <div class="custom-pbar__sub-group" aria-hidden="true">
-            {%- for i in (1..3) -%}
-              {%- for block in sub_blocks -%}
-                {%- if block.settings.text != blank -%}
-                  {%- if block.settings.link != blank -%}
-                    <a href="{{ block.settings.link }}" tabindex="-1" class="custom-pbar__sub-item">
-                      <span>{{ block.settings.text }}</span>
-                      <span class="custom-pbar__sub-separator">✦</span>
-                    </a>
-                  {%- else -%}
-                    <span class="custom-pbar__sub-item">
-                      <span>{{ block.settings.text }}</span>
-                      <span class="custom-pbar__sub-separator">✦</span>
-                    </span>
-                  {%- endif -%}
-                {%- endif -%}
-              {%- endfor -%}
-            {%- endfor -%}
-          </div>
-        </div>
-      </div>
-
-      <div class="custom-pbar__sub-arrow custom-pbar__sub-arrow--right" aria-hidden="true">
-        <svg viewBox="0 0 24 24">
-          <polyline points="9 18 15 12 9 6"></polyline>
-        </svg>
-      </div>
-    </div>
-  {%- endif -%}
-
-  {%- comment -%} ==========================================
-      3. TRUST BADGES BAR
-      ========================================== {%- endcomment -%}
-  {%- if section.settings.trust_badges_enabled -%}
-    <div class="custom-pbar__trust">
-      <div class="custom-pbar__trust-container">
-
-        {%- comment -%} Column 1 {%- endcomment -%}
-        {%- if section.settings.trust_heading_1 != blank -%}
-          <div class="custom-pbar__trust-col">
-            <div class="custom-pbar__trust-icon-box">
-              {%- case section.settings.trust_icon_1 -%}
-                {%- when 'shield' -%}
-                  <svg class="stroke-based" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
-                {%- when 'traditional' -%}
-                  <svg class="stroke-based" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                {%- when 'heart' -%}
-                  <svg class="stroke-based" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                {%- when 'leaf' -%}
-                  <svg class="stroke-based" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
-                {%- when 'truck' -%}
-                  <svg class="stroke-based" viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-                {%- when 'star' -%}
-                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                {%- else -%}
-                  <svg class="stroke-based" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
-              {%- endcase -%}
-            </div>
-            <p class="custom-pbar__trust-text">{{ section.settings.trust_heading_1 }}</p>
-          </div>
-        {%- endif -%}
-
-        {%- comment -%} Column 2 {%- endcomment -%}
-        {%- if section.settings.trust_heading_2 != blank -%}
-          <div class="custom-pbar__trust-col">
-            <div class="custom-pbar__trust-icon-box">
-              {%- case section.settings.trust_icon_2 -%}
-                {%- when 'shield' -%}
-                  <svg class="stroke-based" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
-                {%- when 'traditional' -%}
-                  <svg class="stroke-based" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                {%- when 'heart' -%}
-                  <svg class="stroke-based" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                {%- when 'leaf' -%}
-                  <svg class="stroke-based" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
-                {%- when 'truck' -%}
-                  <svg class="stroke-based" viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-                {%- when 'star' -%}
-                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                {%- else -%}
-                  <svg class="stroke-based" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-              {%- endcase -%}
-            </div>
-            <p class="custom-pbar__trust-text">{{ section.settings.trust_heading_2 }}</p>
-          </div>
-        {%- endif -%}
-
-        {%- comment -%} Column 3 {%- endcomment -%}
-        {%- if section.settings.trust_heading_3 != blank -%}
-          <div class="custom-pbar__trust-col">
-            <div class="custom-pbar__trust-icon-box">
-              {%- case section.settings.trust_icon_3 -%}
-                {%- when 'shield' -%}
-                  <svg class="stroke-based" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
-                {%- when 'traditional' -%}
-                  <svg class="stroke-based" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                {%- when 'heart' -%}
-                  <svg class="stroke-based" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                {%- when 'leaf' -%}
-                  <svg class="stroke-based" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
-                {%- when 'truck' -%}
-                  <svg class="stroke-based" viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-                {%- when 'star' -%}
-                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                {%- else -%}
-                  <svg class="stroke-based" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-              {%- endcase -%}
-            </div>
-            <p class="custom-pbar__trust-text">{{ section.settings.trust_heading_3 }}</p>
-          </div>
-        {%- endif -%}
-
-      </div>
-    </div>
-  {%- endif -%}
-
-  {%- comment -%} ==========================================
-      4. BOTTOM SCROLLING BAR
-      ========================================== {%- endcomment -%}
-  {%- if section.settings.bottom_bar_enabled and bottom_blocks.size > 0 -%}
-    <div class="custom-pbar__bottom" aria-label="Store highlights">
-      <div class="custom-pbar__bottom-track">
+  {%- comment -%} ========================================================
+      SCROLLING BAR 1
+      ======================================================== {%- endcomment -%}
+  {%- if section.settings.bar_1_enabled and bar_1_blocks.size > 0 -%}
+    {%- liquid
+      # Calculate repeat factor so single items or small lists fill any widescreen seamlessly
+      assign repeat_count_1 = 6
+      if bar_1_blocks.size > 4
+        assign repeat_count_1 = 2
+      elsif bar_1_blocks.size > 2
+        assign repeat_count_1 = 4
+      endif
+    -%}
+    <div class="custom-sb__bar custom-sb__bar--1" aria-label="Scrolling Announcement Bar 1">
+      <div class="custom-sb__track">
         {%- comment -%} Group 1 {%- endcomment -%}
-        <div class="custom-pbar__bottom-group">
-          {%- for i in (1..3) -%}
-            {%- for block in bottom_blocks -%}
+        <div class="custom-sb__group">
+          {%- for r in (1..repeat_count_1) -%}
+            {%- for block in bar_1_blocks -%}
               {%- if block.settings.text != blank -%}
                 {%- if block.settings.link != blank -%}
-                  <a href="{{ block.settings.link }}" class="custom-pbar__bottom-item" {{ block.shopify_attributes }}>
+                  <a href="{{ block.settings.link }}" class="custom-sb__item" {{ block.shopify_attributes }}>
                     <span>{{ block.settings.text }}</span>
-                    <span class="custom-pbar__bottom-glyph" aria-hidden="true">◆</span>
+                    {%- if section.settings.bar_1_separator != 'none' -%}
+                      <span class="custom-sb__separator" aria-hidden="true">
+                        {%- case section.settings.bar_1_separator -%}
+                          {%- when 'dot' -%}•
+                          {%- when 'diamond' -%}◆
+                          {%- when 'star' -%}★
+                          {%- when 'slash' -%}/
+                          {%- when 'dash' -%}—
+                        {%- endcase -%}
+                      </span>
+                    {%- endif -%}
                   </a>
                 {%- else -%}
-                  <span class="custom-pbar__bottom-item" {{ block.shopify_attributes }}>
+                  <span class="custom-sb__item" {{ block.shopify_attributes }}>
                     <span>{{ block.settings.text }}</span>
-                    <span class="custom-pbar__bottom-glyph" aria-hidden="true">◆</span>
+                    {%- if section.settings.bar_1_separator != 'none' -%}
+                      <span class="custom-sb__separator" aria-hidden="true">
+                        {%- case section.settings.bar_1_separator -%}
+                          {%- when 'dot' -%}•
+                          {%- when 'diamond' -%}◆
+                          {%- when 'star' -%}★
+                          {%- when 'slash' -%}/
+                          {%- when 'dash' -%}—
+                        {%- endcase -%}
+                      </span>
+                    {%- endif -%}
                   </span>
                 {%- endif -%}
               {%- endif -%}
@@ -626,20 +270,140 @@
           {%- endfor -%}
         </div>
 
-        {%- comment -%} Group 2 (Duplicate for seamless continuous loop) {%- endcomment -%}
-        <div class="custom-pbar__bottom-group" aria-hidden="true">
-          {%- for i in (1..3) -%}
-            {%- for block in bottom_blocks -%}
+        {%- comment -%} Group 2 (Continuous loop duplicate) {%- endcomment -%}
+        <div class="custom-sb__group" aria-hidden="true">
+          {%- for r in (1..repeat_count_1) -%}
+            {%- for block in bar_1_blocks -%}
               {%- if block.settings.text != blank -%}
                 {%- if block.settings.link != blank -%}
-                  <a href="{{ block.settings.link }}" tabindex="-1" class="custom-pbar__bottom-item">
+                  <a href="{{ block.settings.link }}" tabindex="-1" class="custom-sb__item">
                     <span>{{ block.settings.text }}</span>
-                    <span class="custom-pbar__bottom-glyph">◆</span>
+                    {%- if section.settings.bar_1_separator != 'none' -%}
+                      <span class="custom-sb__separator">
+                        {%- case section.settings.bar_1_separator -%}
+                          {%- when 'dot' -%}•
+                          {%- when 'diamond' -%}◆
+                          {%- when 'star' -%}★
+                          {%- when 'slash' -%}/
+                          {%- when 'dash' -%}—
+                        {%- endcase -%}
+                      </span>
+                    {%- endif -%}
                   </a>
                 {%- else -%}
-                  <span class="custom-pbar__bottom-item">
+                  <span class="custom-sb__item">
                     <span>{{ block.settings.text }}</span>
-                    <span class="custom-pbar__bottom-glyph">◆</span>
+                    {%- if section.settings.bar_1_separator != 'none' -%}
+                      <span class="custom-sb__separator">
+                        {%- case section.settings.bar_1_separator -%}
+                          {%- when 'dot' -%}•
+                          {%- when 'diamond' -%}◆
+                          {%- when 'star' -%}★
+                          {%- when 'slash' -%}/
+                          {%- when 'dash' -%}—
+                        {%- endcase -%}
+                      </span>
+                    {%- endif -%}
+                  </span>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} ========================================================
+      SCROLLING BAR 2
+      ======================================================== {%- endcomment -%}
+  {%- if section.settings.bar_2_enabled and bar_2_blocks.size > 0 -%}
+    {%- liquid
+      # Calculate repeat factor so single items or small lists fill any widescreen seamlessly
+      assign repeat_count_2 = 6
+      if bar_2_blocks.size > 4
+        assign repeat_count_2 = 2
+      elsif bar_2_blocks.size > 2
+        assign repeat_count_2 = 4
+      endif
+    -%}
+    <div class="custom-sb__bar custom-sb__bar--2" aria-label="Scrolling Announcement Bar 2">
+      <div class="custom-sb__track">
+        {%- comment -%} Group 1 {%- endcomment -%}
+        <div class="custom-sb__group">
+          {%- for r in (1..repeat_count_2) -%}
+            {%- for block in bar_2_blocks -%}
+              {%- if block.settings.text != blank -%}
+                {%- if block.settings.link != blank -%}
+                  <a href="{{ block.settings.link }}" class="custom-sb__item" {{ block.shopify_attributes }}>
+                    <span>{{ block.settings.text }}</span>
+                    {%- if section.settings.bar_2_separator != 'none' -%}
+                      <span class="custom-sb__separator" aria-hidden="true">
+                        {%- case section.settings.bar_2_separator -%}
+                          {%- when 'dot' -%}•
+                          {%- when 'diamond' -%}◆
+                          {%- when 'star' -%}★
+                          {%- when 'slash' -%}/
+                          {%- when 'dash' -%}—
+                        {%- endcase -%}
+                      </span>
+                    {%- endif -%}
+                  </a>
+                {%- else -%}
+                  <span class="custom-sb__item" {{ block.shopify_attributes }}>
+                    <span>{{ block.settings.text }}</span>
+                    {%- if section.settings.bar_2_separator != 'none' -%}
+                      <span class="custom-sb__separator" aria-hidden="true">
+                        {%- case section.settings.bar_2_separator -%}
+                          {%- when 'dot' -%}•
+                          {%- when 'diamond' -%}◆
+                          {%- when 'star' -%}★
+                          {%- when 'slash' -%}/
+                          {%- when 'dash' -%}—
+                        {%- endcase -%}
+                      </span>
+                    {%- endif -%}
+                  </span>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endfor -%}
+        </div>
+
+        {%- comment -%} Group 2 (Continuous loop duplicate) {%- endcomment -%}
+        <div class="custom-sb__group" aria-hidden="true">
+          {%- for r in (1..repeat_count_2) -%}
+            {%- for block in bar_2_blocks -%}
+              {%- if block.settings.text != blank -%}
+                {%- if block.settings.link != blank -%}
+                  <a href="{{ block.settings.link }}" tabindex="-1" class="custom-sb__item">
+                    <span>{{ block.settings.text }}</span>
+                    {%- if section.settings.bar_2_separator != 'none' -%}
+                      <span class="custom-sb__separator">
+                        {%- case section.settings.bar_2_separator -%}
+                          {%- when 'dot' -%}•
+                          {%- when 'diamond' -%}◆
+                          {%- when 'star' -%}★
+                          {%- when 'slash' -%}/
+                          {%- when 'dash' -%}—
+                        {%- endcase -%}
+                      </span>
+                    {%- endif -%}
+                  </a>
+                {%- else -%}
+                  <span class="custom-sb__item">
+                    <span>{{ block.settings.text }}</span>
+                    {%- if section.settings.bar_2_separator != 'none' -%}
+                      <span class="custom-sb__separator">
+                        {%- case section.settings.bar_2_separator -%}
+                          {%- when 'dot' -%}•
+                          {%- when 'diamond' -%}◆
+                          {%- when 'star' -%}★
+                          {%- when 'slash' -%}/
+                          {%- when 'dash' -%}—
+                        {%- endcase -%}
+                      </span>
+                    {%- endif -%}
                   </span>
                 {%- endif -%}
               {%- endif -%}
@@ -654,224 +418,313 @@
 
 {% schema %}
 {
-  "name": "Custom Multi Promo Bars",
+  "name": "Custom Scrolling Bars",
   "tag": "section",
-  "class": "section-custom-multi-promo-bars",
+  "class": "section-custom-scrolling-bars",
   "settings": [
     {
       "type": "header",
-      "content": "1. Top Announcement Bar"
+      "content": "=== Scrolling Bar 1 Settings ==="
     },
     {
       "type": "checkbox",
-      "id": "top_bar_enabled",
-      "label": "Show Top Announcement Bar",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "top_bar_text",
-      "label": "Announcement Text",
-      "default": "Free shipping on orders over PKR 4,000"
-    },
-    {
-      "type": "url",
-      "id": "top_bar_link",
-      "label": "Announcement Link (Optional)"
-    },
-    {
-      "type": "checkbox",
-      "id": "top_bar_repeat",
-      "label": "Repeat text across bar",
+      "id": "bar_1_enabled",
+      "label": "Enable Scrolling Bar 1",
       "default": true
     },
     {
       "type": "color",
-      "id": "top_bar_bg",
-      "label": "Background Color",
+      "id": "bar_1_bg",
+      "label": "Banner Background Color",
       "default": "#1b3b22"
     },
     {
       "type": "color",
-      "id": "top_bar_text_color",
-      "label": "Text Color",
+      "id": "bar_1_text_color",
+      "label": "Text & Separator Color",
       "default": "#ffffff"
     },
     {
-      "type": "header",
-      "content": "2. Sub-Header Promo Bar"
+      "type": "range",
+      "id": "bar_1_padding",
+      "min": 4,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Banner Size (Vertical Padding)",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "bar_1_font_size",
+      "min": 10,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop Text Size",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "bar_1_font_size_mobile",
+      "min": 9,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile Text Size",
+      "default": 11
+    },
+    {
+      "type": "select",
+      "id": "bar_1_font_family",
+      "label": "Font Family",
+      "options": [
+        { "value": "body", "label": "Theme Body Font" },
+        { "value": "heading", "label": "Theme Heading Font" }
+      ],
+      "default": "body"
+    },
+    {
+      "type": "select",
+      "id": "bar_1_font_weight",
+      "label": "Font Weight",
+      "options": [
+        { "value": "400", "label": "Normal (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi-Bold (600)" },
+        { "value": "700", "label": "Bold (700)" },
+        { "value": "800", "label": "Extra-Bold (800)" }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "select",
+      "id": "bar_1_text_transform",
+      "label": "Text Transform",
+      "options": [
+        { "value": "none", "label": "Normal (As typed)" },
+        { "value": "uppercase", "label": "UPPERCASE" },
+        { "value": "capitalize", "label": "Capitalize Each Word" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "range",
+      "id": "bar_1_letter_spacing",
+      "min": 0,
+      "max": 4,
+      "step": 0.5,
+      "unit": "px",
+      "label": "Letter Spacing",
+      "default": 0.5
+    },
+    {
+      "type": "range",
+      "id": "bar_1_speed",
+      "min": 10,
+      "max": 240,
+      "step": 5,
+      "unit": "s",
+      "label": "Marquee Speed Duration (Higher = Slower)",
+      "default": 80
+    },
+    {
+      "type": "select",
+      "id": "bar_1_direction",
+      "label": "Scroll Direction",
+      "options": [
+        { "value": "normal", "label": "Right to Left (Standard)" },
+        { "value": "reverse", "label": "Left to Right" }
+      ],
+      "default": "normal"
     },
     {
       "type": "checkbox",
-      "id": "sub_header_enabled",
-      "label": "Show Sub-Header Promo Bar",
+      "id": "bar_1_pause_hover",
+      "label": "Pause on Hover",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "bar_1_gap",
+      "min": 12,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Spacing Between Items",
+      "default": 40
+    },
+    {
+      "type": "select",
+      "id": "bar_1_separator",
+      "label": "Separator Symbol",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "dot", "label": "Dot (•)" },
+        { "value": "diamond", "label": "Diamond (◆)" },
+        { "value": "star", "label": "Star (★)" },
+        { "value": "slash", "label": "Slash (/)" },
+        { "value": "dash", "label": "Dash (—)" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "header",
+      "content": "=== Scrolling Bar 2 Settings ==="
+    },
+    {
+      "type": "checkbox",
+      "id": "bar_2_enabled",
+      "label": "Enable Scrolling Bar 2",
       "default": true
     },
     {
       "type": "color",
-      "id": "sub_header_bg",
-      "label": "Background Color",
+      "id": "bar_2_bg",
+      "label": "Banner Background Color",
       "default": "#faf5ee"
     },
     {
       "type": "color",
-      "id": "sub_header_text_color",
-      "label": "Text Color",
+      "id": "bar_2_text_color",
+      "label": "Text & Separator Color",
       "default": "#1f3e2c"
     },
     {
       "type": "range",
-      "id": "sub_header_speed",
-      "min": 5,
-      "max": 60,
+      "id": "bar_2_padding",
+      "min": 4,
+      "max": 40,
       "step": 1,
-      "unit": "s",
-      "label": "Marquee Speed (Duration)",
-      "default": 24
-    },
-    {
-      "type": "header",
-      "content": "3. Trust Badges Bar"
-    },
-    {
-      "type": "checkbox",
-      "id": "trust_badges_enabled",
-      "label": "Show Trust Badges Bar",
-      "default": true
-    },
-    {
-      "type": "color",
-      "id": "trust_badges_bg",
-      "label": "Background Color",
-      "default": "#ffffff"
-    },
-    {
-      "type": "color",
-      "id": "trust_badges_text_color",
-      "label": "Text Color",
-      "default": "#1f3e2c"
-    },
-    {
-      "type": "color",
-      "id": "trust_badges_border_color",
-      "label": "Border / Divider Color",
-      "default": "#e8dfd5"
-    },
-    {
-      "type": "paragraph",
-      "content": "Column 1"
-    },
-    {
-      "type": "select",
-      "id": "trust_icon_1",
-      "label": "Column 1 Icon",
-      "options": [
-        { "value": "shield", "label": "Shield / Trusted" },
-        { "value": "traditional", "label": "Traditional / Craft" },
-        { "value": "heart", "label": "Heart / Healthy" },
-        { "value": "leaf", "label": "Leaf / Organic" },
-        { "value": "truck", "label": "Truck / Fast Delivery" },
-        { "value": "star", "label": "Star / Top Quality" }
-      ],
-      "default": "shield"
-    },
-    {
-      "type": "text",
-      "id": "trust_heading_1",
-      "label": "Column 1 Heading",
-      "default": "Trusted by Thousands of Families"
-    },
-    {
-      "type": "paragraph",
-      "content": "Column 2"
-    },
-    {
-      "type": "select",
-      "id": "trust_icon_2",
-      "label": "Column 2 Icon",
-      "options": [
-        { "value": "shield", "label": "Shield / Trusted" },
-        { "value": "traditional", "label": "Traditional / Craft" },
-        { "value": "heart", "label": "Heart / Healthy" },
-        { "value": "leaf", "label": "Leaf / Organic" },
-        { "value": "truck", "label": "Truck / Fast Delivery" },
-        { "value": "star", "label": "Star / Top Quality" }
-      ],
-      "default": "traditional"
-    },
-    {
-      "type": "text",
-      "id": "trust_heading_2",
-      "label": "Column 2 Heading",
-      "default": "Made with Traditional Methods"
-    },
-    {
-      "type": "paragraph",
-      "content": "Column 3"
-    },
-    {
-      "type": "select",
-      "id": "trust_icon_3",
-      "label": "Column 3 Icon",
-      "options": [
-        { "value": "shield", "label": "Shield / Trusted" },
-        { "value": "traditional", "label": "Traditional / Craft" },
-        { "value": "heart", "label": "Heart / Healthy" },
-        { "value": "leaf", "label": "Leaf / Organic" },
-        { "value": "truck", "label": "Truck / Fast Delivery" },
-        { "value": "star", "label": "Star / Top Quality" }
-      ],
-      "default": "heart"
-    },
-    {
-      "type": "text",
-      "id": "trust_heading_3",
-      "label": "Column 3 Heading",
-      "default": "Healthy Food for a Better Life"
-    },
-    {
-      "type": "header",
-      "content": "4. Bottom Scrolling Bar"
-    },
-    {
-      "type": "checkbox",
-      "id": "bottom_bar_enabled",
-      "label": "Show Bottom Scrolling Bar",
-      "default": true
-    },
-    {
-      "type": "color",
-      "id": "bottom_bar_bg",
-      "label": "Background Color",
-      "default": "#1f3e2c"
-    },
-    {
-      "type": "color",
-      "id": "bottom_bar_text_color",
-      "label": "Text Color",
-      "default": "#ffffff"
+      "unit": "px",
+      "label": "Banner Size (Vertical Padding)",
+      "default": 12
     },
     {
       "type": "range",
-      "id": "bottom_bar_speed",
-      "min": 5,
-      "max": 60,
+      "id": "bar_2_font_size",
+      "min": 10,
+      "max": 32,
       "step": 1,
+      "unit": "px",
+      "label": "Desktop Text Size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "bar_2_font_size_mobile",
+      "min": 9,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile Text Size",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "bar_2_font_family",
+      "label": "Font Family",
+      "options": [
+        { "value": "body", "label": "Theme Body Font" },
+        { "value": "heading", "label": "Theme Heading Font" }
+      ],
+      "default": "heading"
+    },
+    {
+      "type": "select",
+      "id": "bar_2_font_weight",
+      "label": "Font Weight",
+      "options": [
+        { "value": "400", "label": "Normal (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi-Bold (600)" },
+        { "value": "700", "label": "Bold (700)" },
+        { "value": "800", "label": "Extra-Bold (800)" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "select",
+      "id": "bar_2_text_transform",
+      "label": "Text Transform",
+      "options": [
+        { "value": "none", "label": "Normal (As typed)" },
+        { "value": "uppercase", "label": "UPPERCASE" },
+        { "value": "capitalize", "label": "Capitalize Each Word" }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "range",
+      "id": "bar_2_letter_spacing",
+      "min": 0,
+      "max": 4,
+      "step": 0.5,
+      "unit": "px",
+      "label": "Letter Spacing",
+      "default": 1.0
+    },
+    {
+      "type": "range",
+      "id": "bar_2_speed",
+      "min": 10,
+      "max": 240,
+      "step": 5,
       "unit": "s",
-      "label": "Marquee Speed (Duration)",
-      "default": 18
+      "label": "Marquee Speed Duration (Higher = Slower)",
+      "default": 75
+    },
+    {
+      "type": "select",
+      "id": "bar_2_direction",
+      "label": "Scroll Direction",
+      "options": [
+        { "value": "normal", "label": "Right to Left (Standard)" },
+        { "value": "reverse", "label": "Left to Right" }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "checkbox",
+      "id": "bar_2_pause_hover",
+      "label": "Pause on Hover",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "bar_2_gap",
+      "min": 12,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Spacing Between Items",
+      "default": 36
+    },
+    {
+      "type": "select",
+      "id": "bar_2_separator",
+      "label": "Separator Symbol",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "dot", "label": "Dot (•)" },
+        { "value": "diamond", "label": "Diamond (◆)" },
+        { "value": "star", "label": "Star (★)" },
+        { "value": "slash", "label": "Slash (/)" },
+        { "value": "dash", "label": "Dash (—)" }
+      ],
+      "default": "diamond"
     }
   ],
   "blocks": [
     {
-      "type": "marquee_text_sub",
-      "name": "Sub-Header Promo Item",
+      "type": "bar_1_text",
+      "name": "Bar 1 Scrolling Item",
       "settings": [
         {
           "type": "text",
           "id": "text",
-          "label": "Promo Text",
-          "default": "Pure Desi Ghee 100% Natural"
+          "label": "Text",
+          "default": "Free shipping on orders over PKR 4,000"
         },
         {
           "type": "url",
@@ -881,14 +734,14 @@
       ]
     },
     {
-      "type": "marquee_text_bottom",
-      "name": "Bottom Banner Item",
+      "type": "bar_2_text",
+      "name": "Bar 2 Scrolling Item",
       "settings": [
         {
           "type": "text",
           "id": "text",
-          "label": "Promo Text",
-          "default": "100% Organic & Pure Ghee"
+          "label": "Text",
+          "default": "100% Organic & Pure Desi Ghee"
         },
         {
           "type": "url",
@@ -900,48 +753,36 @@
   ],
   "presets": [
     {
-      "name": "Custom Multi Promo Bars",
+      "name": "Custom Scrolling Bars",
       "blocks": [
         {
-          "type": "marquee_text_sub",
+          "type": "bar_1_text",
           "settings": {
-            "text": "Pure Desi Ghee 100% Natural"
+            "text": "Free shipping on orders over PKR 4,000"
           }
         },
         {
-          "type": "marquee_text_sub",
-          "settings": {
-            "text": "Special Offer: Free Home Delivery Across Pakistan"
-          }
-        },
-        {
-          "type": "marquee_text_sub",
-          "settings": {
-            "text": "Fresh From Farm To Your Kitchen"
-          }
-        },
-        {
-          "type": "marquee_text_bottom",
+          "type": "bar_2_text",
           "settings": {
             "text": "100% Organic & Pure Desi Ghee"
           }
         },
         {
-          "type": "marquee_text_bottom",
+          "type": "bar_2_text",
+          "settings": {
+            "text": "Traditional Bilona Method"
+          }
+        },
+        {
+          "type": "bar_2_text",
           "settings": {
             "text": "Lab Tested & Certified Quality"
           }
         },
         {
-          "type": "marquee_text_bottom",
+          "type": "bar_2_text",
           "settings": {
             "text": "No Chemicals or Preservatives Added"
-          }
-        },
-        {
-          "type": "marquee_text_bottom",
-          "settings": {
-            "text": "Handcrafted Using Traditional Bilona Method"
           }
         }
       ]
