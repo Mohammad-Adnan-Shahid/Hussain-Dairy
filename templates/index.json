@@ -276,7 +276,7 @@
         "padding_top": 20,
         "padding_bottom": 20
       },
-      "disabled": true
+      "disabled": false
     },
     "featured_collection": {
       "type": "featured-collection",
@@ -288,7 +288,7 @@
         "description": "",
         "show_description": false,
         "description_style": "body",
-        "columns_desktop": 4,
+        "columns_desktop": 2,
         "enable_desktop_slider": false,
         "full_width": false,
         "show_view_all": false,
@@ -299,13 +299,17 @@
         "show_secondary_image": true,
         "show_vendor": false,
         "show_rating": true,
-        "quick_add": "none",
+        "quick_add": "standard",
         "columns_mobile": "2",
         "swipe_on_mobile": false,
         "padding_top": 0,
-        "padding_bottom": 20
+        "padding_bottom": 20,
+        "products_alignment": "center",
+        "card_bg": "#F8F3E5",
+        "card_button_bg": "#57230F",
+        "card_button_hover": "#D99B20"
       },
-      "disabled": true
+      "disabled": false
     },
     "17864694504f3c66ec": {
       "type": "apps",
@@ -419,21 +423,6 @@
         "padding_top": 0,
         "padding_bottom": 0
       }
-    },
-    "featured_products_two": {
-      "type": "featured-products-two",
-      "settings": {
-        "badge": "Our Products",
-        "heading": "Pure Desi Ghee",
-        "subtitle": "Made with Traditional Care \u2022 100% Pure & Lab Tested",
-        "collection": "shop",
-        "section_bg": "#ffffff",
-        "card_bg": "#F8F3E5",
-        "primary_color": "#57230F",
-        "accent_color": "#D99B20",
-        "padding_top": 35,
-        "padding_bottom": 45
-      }
     }
   },
   "order": [
@@ -444,7 +433,6 @@
     "image_banner_YCR6Lg",
     "custom_multi_promo_bars_9Xj7ck",
     "rich_text_TGaA4k",
-    "featured_products_two",
     "featured_collection",
     "17864694504f3c66ec",
     "1783843602690a6474",

@@ -36,6 +36,127 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+
+  /* Product Placement Alignment (Center, Left, Right) */
+  {%- if section.settings.products_alignment == 'center' -%}
+    #collection-{{ section.id }} .collection__title {
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+      justify-content: center;
+    }
+    #collection-{{ section.id }} .product-grid {
+      justify-content: center;
+      max-width: 980px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    {%- if products_to_display <= 2 or section.settings.columns_desktop == 2 -%}
+      @media screen and (min-width: 750px) {
+        #collection-{{ section.id }} .product-grid .grid__item {
+          width: calc(50% - var(--grid-desktop-horizontal-spacing) / 2);
+          max-width: 440px;
+        }
+      }
+    {%- endif -%}
+  {%- elsif section.settings.products_alignment == 'right' -%}
+    #collection-{{ section.id }} .collection__title {
+      text-align: right;
+      margin-left: auto;
+      margin-right: 0;
+      justify-content: flex-end;
+    }
+    #collection-{{ section.id }} .product-grid {
+      justify-content: flex-end;
+      margin-left: auto;
+    }
+  {%- else -%}
+    #collection-{{ section.id }} .collection__title {
+      text-align: left;
+      margin-left: 0;
+      margin-right: auto;
+      justify-content: flex-start;
+    }
+    #collection-{{ section.id }} .product-grid {
+      justify-content: flex-start;
+    }
+  {%- endif -%}
+
+  /* Hussain Dairy Card Enhancements */
+  #collection-{{ section.id }} .card-wrapper {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    border-radius: 16px;
+  }
+  #collection-{{ section.id }} .card-wrapper:hover {
+    transform: translateY(-4px);
+  }
+  #collection-{{ section.id }} .card {
+    background-color: {{ section.settings.card_bg | default: '#F8F3E5' }};
+    border: 1px solid rgba(87, 35, 15, 0.09);
+    border-radius: 16px;
+    box-shadow: 0 4px 14px rgba(87, 35, 15, 0.04);
+    transition: all 0.25s ease;
+  }
+  #collection-{{ section.id }} .card-wrapper:hover .card {
+    border-color: rgba(87, 35, 15, 0.2);
+    box-shadow: 0 10px 24px rgba(87, 35, 15, 0.1);
+  }
+  #collection-{{ section.id }} .card__inner {
+    border-radius: 14px 14px 0 0;
+    background: #ffffff;
+    overflow: hidden;
+  }
+  #collection-{{ section.id }} .card__heading a {
+    color: #57230F;
+    font-weight: 700;
+    font-size: 19px;
+    line-height: 1.3;
+    transition: color 0.2s ease;
+  }
+  #collection-{{ section.id }} .card__heading a:hover {
+    color: #D99B20;
+  }
+  #collection-{{ section.id }} .price-item--regular,
+  #collection-{{ section.id }} .price-item--sale {
+    color: #57230F;
+    font-weight: 800;
+    font-size: 19px;
+  }
+  #collection-{{ section.id }} s.price-item--regular {
+    color: #888888;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  #collection-{{ section.id }} .quick-add__submit {
+    background-color: {{ section.settings.card_button_bg | default: '#57230F' }} !important;
+    color: #ffffff !important;
+    border: 2px solid {{ section.settings.card_button_bg | default: '#57230F' }} !important;
+    border-radius: 30px !important;
+    font-weight: 700 !important;
+    font-size: 13.5px !important;
+    letter-spacing: 0.06em !important;
+    text-transform: uppercase !important;
+    padding: 12px 24px !important;
+    margin-top: 14px !important;
+    box-shadow: 0 4px 12px rgba(87, 35, 15, 0.15) !important;
+    transition: all 0.25s ease !important;
+  }
+  #collection-{{ section.id }} .quick-add__submit:hover {
+    background-color: {{ section.settings.card_button_hover | default: '#D99B20' }} !important;
+    border-color: {{ section.settings.card_button_hover | default: '#D99B20' }} !important;
+    color: #ffffff !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 18px rgba(217, 155, 32, 0.3) !important;
+  }
+  #collection-{{ section.id }} .card__badge .badge {
+    background-color: #57230F;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: none;
+  }
 {%- endstyle -%}
 
 {%- liquid
@@ -310,7 +431,46 @@
     {
       "type": "header",
       "content": "t:sections.featured-collection.settings.header_collection.content"
-    },    
+    },
+    {
+      "type": "select",
+      "id": "products_alignment",
+      "label": "Product Placement / Alignment",
+      "options": [
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card Background Color",
+      "default": "#F8F3E5"
+    },
+    {
+      "type": "color",
+      "id": "card_button_bg",
+      "label": "Add to Cart Button Color",
+      "default": "#57230F"
+    },
+    {
+      "type": "color",
+      "id": "card_button_hover",
+      "label": "Add to Cart Button Hover Color",
+      "default": "#D99B20"
+    },
+    
     {
       "type": "range",
       "id": "columns_desktop",
