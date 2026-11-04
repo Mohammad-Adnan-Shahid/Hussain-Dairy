@@ -66,9 +66,43 @@
         "enable_country_selector": false,
         "enable_language_selector": false
       }
+    },
+    "custom_multi_promo_bars_3qzC6R": {
+      "type": "custom-multi-promo-bars",
+      "blocks": {
+        "scrolling_text_K7iCJ7": {
+          "type": "scrolling_text",
+          "settings": {
+            "text": "Free shipping on orders over PKR 4,000",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "scrolling_text_K7iCJ7"
+      ],
+      "name": "Custom Scrolling Bar",
+      "settings": {
+        "bar_enabled": true,
+        "bar_bg": "#5D250F",
+        "bar_text_color": "#ffffff",
+        "bar_padding": 10,
+        "bar_font_size": 13,
+        "bar_font_size_mobile": 11,
+        "bar_font_family": "body",
+        "bar_font_weight": "500",
+        "bar_text_transform": "none",
+        "bar_letter_spacing": 0.5,
+        "bar_speed": 80,
+        "bar_direction": "normal",
+        "bar_pause_hover": true,
+        "bar_gap": 40,
+        "bar_separator": "none"
+      }
     }
   },
   "order": [
+    "custom_multi_promo_bars_3qzC6R",
     "header",
     "announcement_bar_hJDeaP"
   ]
