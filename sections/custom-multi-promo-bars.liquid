@@ -33,6 +33,7 @@
     box-sizing: border-box;
   }
 
+  .custom-sb-{{ section.id }} .custom-sb__bar,
   #shopify-section-{{ section.id }} .custom-sb__bar {
     --csb-bg: {{ section.settings.bar_bg }};
     --csb-text: {{ section.settings.bar_text_color }};
@@ -57,6 +58,7 @@
     {%- endif -%}
   }
 
+  .custom-sb-{{ section.id }} .custom-sb__track,
   #shopify-section-{{ section.id }} .custom-sb__track {
     display: flex;
     width: max-content;
@@ -74,12 +76,14 @@
     }
   {%- endif -%}
 
+  .custom-sb-{{ section.id }} .custom-sb__group,
   #shopify-section-{{ section.id }} .custom-sb__group {
     display: flex;
     align-items: center;
     flex-shrink: 0;
   }
 
+  .custom-sb-{{ section.id }} .custom-sb__item,
   #shopify-section-{{ section.id }} .custom-sb__item {
     display: inline-flex;
     align-items: center;
@@ -118,13 +122,14 @@
   }
 
   @media screen and (max-width: 768px) {
-    #shopify-section-{{ section.id }} .custom-sb__item {
+    .custom-sb-{{ section.id }} .custom-sb__item,
+  #shopify-section-{{ section.id }} .custom-sb__item {
       font-size: var(--csb-fsize-mobile);
     }
   }
 </style>
 
-<div class="custom-sb__wrapper">
+<div class="custom-sb__wrapper custom-sb-{{ section.id }}" id="custom-sb-{{ section.id }}">
   {%- if section.settings.bar_enabled and bar_blocks.size > 0 -%}
     {%- liquid
       # Calculate repeat count so single phrase or few items seamlessly fill wide viewports

@@ -1,0 +1,579 @@
+{%- comment -%}
+  Hussain Dairy — Centered 2-Product Collection Section
+  Features:
+  - Center-aligned header and subtitle
+  - Centered 2-product grid with max-width container (no awkward wide stretching)
+  - Large prominent product images with hover transition & sale badges
+  - Star ratings and review count integration
+  - PKR price formatting with sale & compare-at price
+  - Dynamic variant pills (e.g. 500g / 1kg) on card
+  - Full AJAX Add to Cart button integrated with Dawn cart drawer
+  - Brand Palette: Deep Brown (#57230F), Warm Cream (#F8F3E5), Golden Accent (#D99B20), White (#FFFFFF)
+{%- endcomment -%}
+
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'component-loading-spinner.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign target_collection = section.settings.collection
+  assign products_found = 0
+
+  # Build list of 2 products
+  if section.settings.product_1 != blank or section.settings.product_2 != blank
+    assign product_list = ''
+    if section.settings.product_1 != blank
+      assign product_list = product_list | append: section.settings.product_1.handle | append: ','
+    endif
+    if section.settings.product_2 != blank
+      assign product_list = product_list | append: section.settings.product_2.handle
+    endif
+    assign product_handles = product_list | split: ','
+  endif
+-%}
+
+<style>
+  .featured-p2-{{ section.id }} {
+    --fp2-bg: {{ section.settings.section_bg }};
+    --fp2-card-bg: {{ section.settings.card_bg }};
+    --fp2-primary: {{ section.settings.primary_color }};
+    --fp2-accent: {{ section.settings.accent_color }};
+    --fp2-white: #ffffff;
+    --fp2-text-dark: #222222;
+    --fp2-text-muted: #666666;
+    background-color: var(--fp2-bg);
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: var(--font-body-family, inherit);
+  }
+
+  .featured-p2-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  .featured-p2-{{ section.id }} .fp2__container {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Header */
+  .featured-p2-{{ section.id }} .fp2__header {
+    text-align: center;
+    max-width: 650px;
+    margin: 0 auto 36px auto;
+  }
+
+  .featured-p2-{{ section.id }} .fp2__badge {
+    display: inline-block;
+    color: var(--fp2-primary);
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    padding: 4px 14px;
+    background-color: rgba(87, 35, 15, 0.08);
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
+
+  .featured-p2-{{ section.id }} .fp2__title {
+    color: var(--fp2-primary);
+    font-family: var(--font-heading-family, inherit);
+    font-size: 34px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin: 0 0 10px 0;
+    letter-spacing: -0.01em;
+  }
+
+  .featured-p2-{{ section.id }} .fp2__subtitle {
+    color: var(--fp2-text-muted);
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* 2-Product Grid */
+  .featured-p2-{{ section.id }} .fp2__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px;
+    width: 100%;
+    max-width: 960px;
+    margin: 0 auto;
+    align-items: stretch;
+  }
+
+  /* Card */
+  .featured-p2-{{ section.id }} .fp2__card {
+    background-color: var(--fp2-card-bg);
+    border: 1px solid rgba(87, 35, 15, 0.09);
+    border-radius: 18px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    position: relative;
+    box-shadow: 0 4px 16px rgba(87, 35, 15, 0.04);
+  }
+
+  .featured-p2-{{ section.id }} .fp2__card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(87, 35, 15, 0.1);
+    border-color: rgba(87, 35, 15, 0.2);
+  }
+
+  /* Media Box */
+  .featured-p2-{{ section.id }} .fp2__media-wrap {
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%; /* 1:1 Aspect Ratio */
+    background: #ffffff;
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 18px;
+    border: 1px solid rgba(87, 35, 15, 0.05);
+  }
+
+  .featured-p2-{{ section.id }} .fp2__media-link {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    overflow: hidden;
+  }
+
+  .featured-p2-{{ section.id }} .fp2__media-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 12px;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+  }
+
+  .featured-p2-{{ section.id }} .fp2__card:hover .fp2__media-img.primary-has-secondary {
+    opacity: 0;
+  }
+
+  .featured-p2-{{ section.id }} .fp2__media-img.secondary-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+  }
+
+  .featured-p2-{{ section.id }} .fp2__card:hover .fp2__media-img.secondary-img {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+
+  .featured-p2-{{ section.id }} .fp2__card:hover .fp2__media-img:not(.primary-has-secondary) {
+    transform: scale(1.04);
+  }
+
+  /* Badges */
+  .featured-p2-{{ section.id }} .fp2__badge-sale {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background-color: var(--fp2-primary);
+    color: var(--fp2-white);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 4px 10px;
+    border-radius: 20px;
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  .featured-p2-{{ section.id }} .fp2__badge-soldout {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background-color: #555555;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 20px;
+    z-index: 2;
+  }
+
+  /* Card Content */
+  .featured-p2-{{ section.id }} .fp2__content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    text-align: center;
+  }
+
+  .featured-p2-{{ section.id }} .fp2__product-title {
+    font-family: var(--font-heading-family, inherit);
+    font-size: 21px;
+    font-weight: 800;
+    color: var(--fp2-primary);
+    text-decoration: none;
+    line-height: 1.3;
+    margin: 0 0 8px 0;
+    transition: color 0.2s ease;
+  }
+
+  .featured-p2-{{ section.id }} .fp2__product-title:hover {
+    color: var(--fp2-accent);
+  }
+
+  /* Rating */
+  .featured-p2-{{ section.id }} .fp2__rating {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--fp2-text-dark);
+  }
+
+  .featured-p2-{{ section.id }} .fp2__stars {
+    color: var(--fp2-accent);
+    letter-spacing: 1px;
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  .featured-p2-{{ section.id }} .fp2__review-count {
+    color: var(--fp2-text-muted);
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  /* Price */
+  .featured-p2-{{ section.id }} .fp2__price-box {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .featured-p2-{{ section.id }} .fp2__price-current {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--fp2-primary);
+    letter-spacing: -0.02em;
+  }
+
+  .featured-p2-{{ section.id }} .fp2__price-compare {
+    font-size: 15px;
+    color: #888888;
+    text-decoration: line-through;
+    font-weight: 500;
+  }
+
+  /* Variants Options (if any) */
+  .featured-p2-{{ section.id }} .fp2__variants-wrap {
+    margin-bottom: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .featured-p2-{{ section.id }} .fp2__variant-btn {
+    border: 1px solid rgba(87, 35, 15, 0.2);
+    background: #ffffff;
+    color: var(--fp2-primary);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .featured-p2-{{ section.id }} .fp2__variant-btn.active,
+  .featured-p2-{{ section.id }} .fp2__variant-btn:hover {
+    background-color: var(--fp2-primary);
+    color: var(--fp2-white);
+    border-color: var(--fp2-primary);
+  }
+
+  /* Add to Cart Button */
+  .featured-p2-{{ section.id }} .fp2__cta-wrap {
+    margin-top: auto;
+  }
+
+  .featured-p2-{{ section.id }} .fp2__btn-submit {
+    width: 100%;
+    background-color: var(--fp2-primary);
+    color: var(--fp2-white);
+    border: 2px solid var(--fp2-primary);
+    border-radius: 30px;
+    padding: 13px 24px;
+    font-size: 14.5px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(87, 35, 15, 0.15);
+  }
+
+  .featured-p2-{{ section.id }} .fp2__btn-submit:hover:not([disabled]) {
+    background-color: var(--fp2-accent);
+    border-color: var(--fp2-accent);
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(217, 155, 32, 0.35);
+  }
+
+  .featured-p2-{{ section.id }} .fp2__btn-submit[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: #888888;
+    border-color: #888888;
+  }
+
+  .featured-p2-{{ section.id }} .fp2__view-details {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--fp2-primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.2s;
+  }
+
+  .featured-p2-{{ section.id }} .fp2__view-details:hover {
+    color: var(--fp2-accent);
+  }
+
+  /* Responsive Rules */
+  @media screen and (max-width: 820px) {
+    .featured-p2-{{ section.id }} .fp2__grid {
+      gap: 20px;
+    }
+    .featured-p2-{{ section.id }} .fp2__title {
+      font-size: 28px;
+    }
+    .featured-p2-{{ section.id }} .fp2__card {
+      padding: 16px;
+    }
+  }
+
+  @media screen and (max-width: 640px) {
+    .featured-p2-{{ section.id }} .fp2__grid {
+      grid-template-columns: 1fr;
+      max-width: 420px;
+      gap: 24px;
+    }
+    .featured-p2-{{ section.id }} .fp2__title {
+      font-size: 25px;
+    }
+    .featured-p2-{{ section.id }} .fp2__subtitle {
+      font-size: 14px;
+    }
+  }
+</style>
+
+<section class="featured-p2-{{ section.id }}" aria-label="{{ section.settings.heading | escape }}">
+  <div class="fp2__container">
+
+    {%- comment -%} Centered Header Block {%- endcomment -%}
+    {%- if section.settings.heading != blank or section.settings.badge != blank -%}
+      <div class="fp2__header">
+        {%- if section.settings.badge != blank -%}
+          <span class="fp2__badge">{{ section.settings.badge }}</span>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="fp2__title">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subtitle != blank -%}
+          <p class="fp2__subtitle">{{ section.settings.subtitle }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} 2-Product Centered Showcase Grid {%- endcomment -%}
+    <div class="fp2__grid">
+      {%- liquid
+        # Determine items to render: either from manual pickers or from collection
+        assign items_to_show = ''
+        if product_handles.size > 0
+          for handle in product_handles
+            assign p = all_products[handle]
+            if p != blank
+              render 'featured-product-card-two', product: p, section_id: section.id
+              assign products_found = products_found | plus: 1
+            endif
+          endfor
+        endif
+
+        # Fallback to collection if manual pickers were empty or not found
+        if products_found < 2 and target_collection != blank and target_collection.products_count > 0
+          for p in target_collection.products limit: 2
+            render 'featured-product-card-two', product: p, section_id: section.id
+            assign products_found = products_found | plus: 1
+          endfor
+        endif
+      -%}
+
+      {%- if products_found == 0 -%}
+        {%- comment -%} Placeholder when no products selected {%- endcomment -%}
+        {%- for i in (1..2) -%}
+          <div class="fp2__card">
+            <div class="fp2__media-wrap">
+              {{ 'product-' | append: i | placeholder_svg_tag: 'fp2__media-img' }}
+            </div>
+            <div class="fp2__content">
+              <h3 class="fp2__product-title">Sample Desi Ghee Product {{ i }}</h3>
+              <div class="fp2__rating">
+                <span class="fp2__stars">★★★★★</span>
+                <span class="fp2__review-count">5.0 (50+ reviews)</span>
+              </div>
+              <div class="fp2__price-box">
+                <span class="fp2__price-current">Rs. 3,500</span>
+                <span class="fp2__price-compare">Rs. 3,800</span>
+              </div>
+              <div class="fp2__cta-wrap">
+                <button class="fp2__btn-submit" type="button">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured Products (2 Cards)",
+  "tag": "section",
+  "class": "section-featured-products-two",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "text",
+      "id": "badge",
+      "label": "Small Tag / Badge",
+      "default": "Our Products"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Pure Desi Ghee"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Made with Traditional Care • 100% Pure & Lab Tested"
+    },
+    {
+      "type": "header",
+      "content": "Product Source"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection (First 2 products will display)"
+    },
+    {
+      "type": "product",
+      "id": "product_1",
+      "label": "Product 1 Override (e.g. Cow Desi Ghee)"
+    },
+    {
+      "type": "product",
+      "id": "product_2",
+      "label": "Product 2 Override (e.g. Buffalo Desi Ghee)"
+    },
+    {
+      "type": "header",
+      "content": "Colors (Hussain Dairy Brand)"
+    },
+    {
+      "type": "color",
+      "id": "section_bg",
+      "label": "Section Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card Background Color",
+      "default": "#F8F3E5"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "Primary Deep Brown Color",
+      "default": "#57230F"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Golden Accent Color",
+      "default": "#D99B20"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 35
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 45
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Products (2 Cards)",
+      "settings": {
+        "badge": "Our Products",
+        "heading": "Pure Desi Ghee",
+        "subtitle": "Made with Care.(100% Pure)"
+      }
+    }
+  ]
+}
+{% endschema %}
