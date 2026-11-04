@@ -508,55 +508,120 @@
 }
 
 /* ========================================================
-   HUSSAIN DAIRY - PREMIUM RESPONSIVE FOOTER STYLES
+   HUSSAIN DAIRY - PREMIUM RESPONSIVE 4-COLUMN FOOTER
    ======================================================== */
+
 .footer {
   background-color: #57230F !important;
   color: #F8F3E5 !important;
 }
 
+/* --- Desktop Layout (>= 990px): 4 Proportional Columns --- */
 @media screen and (min-width: 990px) {
+  .footer__content-top {
+    padding-top: 4.5rem !important;
+    padding-bottom: 5.5rem !important;
+  }
+
   .footer__content-top .footer__blocks-wrapper {
     display: grid !important;
-    grid-template-columns: 1.5fr 1fr 1fr 1.3fr !important;
-    gap: 40px !important;
+    grid-template-columns: 1.4fr 0.9fr 0.9fr 1.3fr !important;
+    column-gap: 40px !important;
+    row-gap: 30px !important;
     align-items: start !important;
+  }
+
+  /* CRITICAL: Overwrite base.css width: calc(25% - ...) so items fill their grid cells */
+  .footer__content-top .footer__blocks-wrapper .footer-block.grid__item {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .footer-block__heading {
+    white-space: nowrap !important;
+    font-size: 1.6rem !important;
   }
 }
 
+/* --- Tablet Layout (750px - 989px): Balanced 2x2 Grid --- */
 @media screen and (min-width: 750px) and (max-width: 989px) {
+  .footer__content-top {
+    padding-top: 3.5rem !important;
+    padding-bottom: 4.5rem !important;
+  }
+
   .footer__content-top .footer__blocks-wrapper {
     display: grid !important;
     grid-template-columns: 1fr 1fr !important;
-    gap: 32px !important;
+    column-gap: 36px !important;
+    row-gap: 36px !important;
     align-items: start !important;
+  }
+
+  .footer__content-top .footer__blocks-wrapper .footer-block.grid__item {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .footer-block__heading {
+    font-size: 1.6rem !important;
   }
 }
 
+/* --- Mobile Layout (< 750px): Clean Single Column Stack --- */
 @media screen and (max-width: 749px) {
+  .footer__content-top {
+    padding-top: 3rem !important;
+    padding-bottom: 3.5rem !important;
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+  }
+
   .footer__content-top .footer__blocks-wrapper {
     display: flex !important;
     flex-direction: column !important;
-    gap: 28px !important;
+    gap: 32px !important;
   }
-  .footer-block.grid__item {
+
+  .footer__content-top .footer__blocks-wrapper .footer-block.grid__item {
+    width: 100% !important;
+    max-width: 100% !important;
     margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .footer-block__heading {
+    white-space: normal !important;
+    font-size: 1.65rem !important;
+    margin-bottom: 1.4rem !important;
+  }
+
+  .footer-block__newsletter .newsletter-form__field-wrapper {
+    max-width: 100% !important;
     width: 100% !important;
   }
 }
 
+/* --- Typography & Headings --- */
 .footer-block__heading {
   color: #FFFFFF !important;
   font-family: var(--font-heading-family, inherit) !important;
-  font-size: 17px !important;
   font-weight: 700 !important;
-  margin-bottom: 16px !important;
-  letter-spacing: 0.03em !important;
+  letter-spacing: 0.04em !important;
+  margin-top: 0 !important;
+  margin-bottom: 1.6rem !important;
 }
 
+/* --- Links Styling --- */
 .footer-block__details-content .list-menu__item--link {
-  color: #F8F3E5 !important;
-  font-size: 14.5px !important;
+  color: rgba(248, 243, 229, 0.85) !important;
+  font-size: 1.45rem !important;
   padding: 6px 0 !important;
   display: inline-block !important;
   transition: all 0.2s ease !important;
@@ -564,38 +629,99 @@
 
 .footer-block__details-content .list-menu__item--link:hover {
   color: #D99B20 !important;
-  transform: translateX(3px) !important;
+  transform: translateX(4px) !important;
 }
 
-.footer-block__brand-info .rte {
-  color: rgba(248, 243, 229, 0.9) !important;
-  font-size: 13.5px !important;
-  line-height: 1.6 !important;
-  margin-top: 12px !important;
+/* --- Brand Story --- */
+.footer-block__brand-info .rte,
+.footer-block__brand-info p {
+  color: rgba(248, 243, 229, 0.85) !important;
+  font-size: 1.35rem !important;
+  line-height: 1.65 !important;
+  margin-top: 1.2rem !important;
+  margin-bottom: 0 !important;
+}
+
+.footer-block__image-wrapper {
+  margin-bottom: 1.4rem !important;
+}
+
+/* --- Newsletter Field (Pill Style with Golden Accent) --- */
+.footer-block__newsletter .field {
+  position: relative !important;
 }
 
 .footer-block__newsletter .field__input {
-  background: rgba(255, 255, 255, 0.1) !important;
-  border: 1.5px solid rgba(217, 155, 32, 0.4) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1.5px solid rgba(217, 155, 32, 0.45) !important;
   color: #FFFFFF !important;
   border-radius: 30px !important;
-  padding: 12px 48px 12px 20px !important;
+  padding: 1.2rem 5rem 1.2rem 2rem !important;
+  height: 48px !important;
+  font-size: 1.4rem !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease !important;
+}
+
+.footer-block__newsletter .field__input:focus {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: #D99B20 !important;
+  box-shadow: 0 0 0 3px rgba(217, 155, 32, 0.25) !important;
+  outline: none !important;
 }
 
 .footer-block__newsletter .field__label {
   color: rgba(248, 243, 229, 0.7) !important;
+  left: 2rem !important;
+  top: 1.4rem !important;
 }
 
 .footer-block__newsletter .field__button {
   color: #D99B20 !important;
   right: 6px !important;
+  width: 40px !important;
+  height: 40px !important;
+  top: 4px !important;
+  transition: transform 0.2s ease, color 0.2s ease !important;
 }
 
+.footer-block__newsletter .field__button:hover {
+  color: #FFFFFF !important;
+  transform: scale(1.1) !important;
+}
+
+/* --- Social Icons --- */
+.footer__list-social.list-social {
+  gap: 12px !important;
+  margin-top: 1.4rem !important;
+}
+
+.footer__list-social .list-social__item .link {
+  color: rgba(248, 243, 229, 0.8) !important;
+  padding: 8px !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  transition: all 0.2s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.footer__list-social .list-social__item .link:hover {
+  color: #FFFFFF !important;
+  background: #D99B20 !important;
+  transform: translateY(-2px) !important;
+}
+
+/* --- Bottom Copyright Bar --- */
 .footer__content-bottom {
   border-top: 1px solid rgba(248, 243, 229, 0.15) !important;
+  padding-top: 2rem !important;
+  padding-bottom: 2rem !important;
 }
 
-.footer__copyright {
-  color: rgba(248, 243, 229, 0.75) !important;
-  font-size: 13px !important;
+.footer__copyright,
+.copyright__content,
+.copyright__content a {
+  color: rgba(248, 243, 229, 0.7) !important;
+  font-size: 1.25rem !important;
 }
