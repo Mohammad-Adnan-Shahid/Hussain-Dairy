@@ -506,3 +506,96 @@
     }
   }
 }
+
+/* ========================================================
+   HUSSAIN DAIRY - PREMIUM RESPONSIVE FOOTER STYLES
+   ======================================================== */
+.footer {
+  background-color: #57230F !important;
+  color: #F8F3E5 !important;
+}
+
+@media screen and (min-width: 990px) {
+  .footer__content-top .footer__blocks-wrapper {
+    display: grid !important;
+    grid-template-columns: 1.5fr 1fr 1fr 1.3fr !important;
+    gap: 40px !important;
+    align-items: start !important;
+  }
+}
+
+@media screen and (min-width: 750px) and (max-width: 989px) {
+  .footer__content-top .footer__blocks-wrapper {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 32px !important;
+    align-items: start !important;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .footer__content-top .footer__blocks-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 28px !important;
+  }
+  .footer-block.grid__item {
+    margin: 0 !important;
+    width: 100% !important;
+  }
+}
+
+.footer-block__heading {
+  color: #FFFFFF !important;
+  font-family: var(--font-heading-family, inherit) !important;
+  font-size: 17px !important;
+  font-weight: 700 !important;
+  margin-bottom: 16px !important;
+  letter-spacing: 0.03em !important;
+}
+
+.footer-block__details-content .list-menu__item--link {
+  color: #F8F3E5 !important;
+  font-size: 14.5px !important;
+  padding: 6px 0 !important;
+  display: inline-block !important;
+  transition: all 0.2s ease !important;
+}
+
+.footer-block__details-content .list-menu__item--link:hover {
+  color: #D99B20 !important;
+  transform: translateX(3px) !important;
+}
+
+.footer-block__brand-info .rte {
+  color: rgba(248, 243, 229, 0.9) !important;
+  font-size: 13.5px !important;
+  line-height: 1.6 !important;
+  margin-top: 12px !important;
+}
+
+.footer-block__newsletter .field__input {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1.5px solid rgba(217, 155, 32, 0.4) !important;
+  color: #FFFFFF !important;
+  border-radius: 30px !important;
+  padding: 12px 48px 12px 20px !important;
+}
+
+.footer-block__newsletter .field__label {
+  color: rgba(248, 243, 229, 0.7) !important;
+}
+
+.footer-block__newsletter .field__button {
+  color: #D99B20 !important;
+  right: 6px !important;
+}
+
+.footer__content-bottom {
+  border-top: 1px solid rgba(248, 243, 229, 0.15) !important;
+}
+
+.footer__copyright {
+  color: rgba(248, 243, 229, 0.75) !important;
+  font-size: 13px !important;
+}

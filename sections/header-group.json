@@ -14,11 +14,49 @@
     "header": {
       "type": "header",
       "custom_css": [
-        "@media screen and (min-width: 990px) {.header {display: flex !important; justify-content: space-between !important; padding-top: 0; padding-bottom: 0; }}",
-        ".header__inline-menu ul li a {font-weight: 600; font-size: 18px; padding-left: 40px;}"
+        "@media screen and (min-width: 990px) {",
+        "  .header {",
+        "    display: grid !important;",
+        "    grid-template-columns: auto 1fr auto !important;",
+        "    align-items: center !important;",
+        "    padding-top: 10px !important;",
+        "    padding-bottom: 10px !important;",
+        "  }",
+        "  .header__heading {",
+        "    grid-column: 1 !important;",
+        "    justify-self: start !important;",
+        "  }",
+        "  .header__inline-menu {",
+        "    grid-column: 2 !important;",
+        "    justify-self: center !important;",
+        "    text-align: center !important;",
+        "  }",
+        "  .header__inline-menu ul {",
+        "    display: flex !important;",
+        "    justify-content: center !important;",
+        "    gap: 8px !important;",
+        "  }",
+        "  .header__inline-menu ul li a {",
+        "    font-weight: 600 !important;",
+        "    font-size: 16px !important;",
+        "    padding: 8px 16px !important;",
+        "    color: #57230F !important;",
+        "    transition: color 0.2s ease !important;",
+        "  }",
+        "  .header__inline-menu ul li a:hover {",
+        "    color: #D99B20 !important;",
+        "  }",
+        "  .header__icons {",
+        "    grid-column: 3 !important;",
+        "    justify-self: end !important;",
+        "    display: flex !important;",
+        "    align-items: center !important;",
+        "    gap: 12px !important;",
+        "  }",
+        "}"
       ],
       "settings": {
-        "logo_position": "middle-center",
+        "logo_position": "middle-left",
         "mobile_logo_position": "center",
         "menu": "main-menu",
         "menu_type_desktop": "dropdown",
@@ -103,7 +141,6 @@
   },
   "order": [
     "custom_multi_promo_bars_3qzC6R",
-    "header",
-    "announcement_bar_hJDeaP"
+    "header"
   ]
 }

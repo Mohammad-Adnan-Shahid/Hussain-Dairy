@@ -1,39 +1,115 @@
-.contact img {
-  max-width: 100%;
+/* Hussain Dairy - Contact Form Card Styling */
+.contact.page-width--narrow {
+  max-width: 760px;
+  margin: 0 auto;
 }
 
-.contact .form__message {
-  align-items: flex-start;
+.contact {
+  background: #ffffff;
+  border: 1.5px solid rgba(87, 35, 15, 0.1);
+  border-radius: 20px;
+  padding: 44px 38px;
+  box-shadow: 0 10px 30px rgba(87, 35, 15, 0.06);
+  box-sizing: border-box;
 }
 
-.contact .icon-success {
-  margin-top: 0.2rem;
+.contact .title {
+  text-align: center;
+  color: #57230F;
+  font-family: var(--font-heading-family, inherit);
+  font-size: 32px;
+  font-weight: 800;
+  margin: 0 0 10px 0;
+  letter-spacing: -0.01em;
+}
+
+.contact__subtitle {
+  text-align: center;
+  color: #666666;
+  font-size: 15px;
+  margin: 0 auto 28px auto;
+  max-width: 520px;
+  line-height: 1.5;
 }
 
 .contact .field {
-  margin-bottom: 1.5rem;
+  margin-bottom: 18px;
 }
 
-@media screen and (min-width: 750px) {
-  .contact .field {
-    margin-bottom: 2rem;
-  }
+.contact .field__input {
+  border-radius: 12px !important;
+  border: 1.5px solid rgba(87, 35, 15, 0.18) !important;
+  background-color: #FAF8F5 !important;
+  color: #222222 !important;
+  font-size: 15px !important;
+  padding: 14px 18px !important;
+  transition: all 0.25s ease !important;
+}
+
+.contact .field__input:focus {
+  border-color: #D99B20 !important;
+  box-shadow: 0 0 0 3px rgba(217, 155, 32, 0.15) !important;
+  background-color: #ffffff !important;
+  outline: none !important;
+}
+
+.contact .field__label {
+  color: #777777 !important;
+  font-size: 14px !important;
+}
+
+.contact .text-area {
+  min-height: 130px !important;
 }
 
 .contact__button {
-  margin-top: 3rem;
+  margin-top: 24px;
+  text-align: center;
 }
 
-@media screen and (min-width: 750px) {
-  .contact__button {
-    margin-top: 4rem;
-  }
+.contact__button .button {
+  width: 100% !important;
+  background-color: #57230F !important;
+  color: #ffffff !important;
+  border: 2px solid #57230F !important;
+  border-radius: 30px !important;
+  font-weight: 700 !important;
+  font-size: 15px !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  padding: 15px 30px !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 14px rgba(87, 35, 15, 0.18) !important;
+  transition: all 0.25s ease !important;
+}
+
+.contact__button .button:hover {
+  background-color: #D99B20 !important;
+  border-color: #D99B20 !important;
+  color: #ffffff !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(217, 155, 32, 0.35) !important;
 }
 
 @media screen and (min-width: 750px) {
   .contact__fields {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-column-gap: 2rem;
+    grid-column-gap: 20px;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .contact {
+    padding: 30px 20px;
+    border-radius: 16px;
+    margin: 0 16px;
+  }
+  .contact .title {
+    font-size: 25px;
+  }
+  .contact__subtitle {
+    font-size: 13.5px;
+    margin-bottom: 20px;
   }
 }
