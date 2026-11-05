@@ -220,7 +220,7 @@
       "name": "Custom Scrolling Bar",
       "settings": {
         "bar_enabled": true,
-        "bar_bg": "#5D250C",
+        "bar_bg": "#5d250c",
         "bar_text_color": "#ffffff",
         "bar_padding": 13,
         "bar_font_size": 16,
@@ -288,9 +288,9 @@
         "show_description": false,
         "description_style": "body",
         "products_alignment": "center",
-        "card_bg": "#F8F3E5",
-        "card_button_bg": "#57230F",
-        "card_button_hover": "#D99B20",
+        "card_bg": "#f8f3e5",
+        "card_button_bg": "#57230f",
+        "card_button_hover": "#d99b20",
         "columns_desktop": 2,
         "enable_desktop_slider": false,
         "full_width": false,
@@ -407,9 +407,9 @@
       "settings": {
         "heading": "Get in Touch",
         "subtitle": "Have questions about our pure desi ghee, your order, or delivery? Reach out to us anytime.",
-        "heading_size": "h1",
+        "heading_size": "h0",
         "color_scheme": "",
-        "padding_top": 36,
+        "padding_top": 60,
         "padding_bottom": 36
       }
     },
