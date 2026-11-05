@@ -161,20 +161,28 @@
     color: #D99B20 !important;
   }
 
-  /* Rating Stars & Count */
-  #collection-{{ section.id }} .rating {
-    display: flex !important;
+  /* Rating Stars & Count - Inlined on One Row */
+  #collection-{{ section.id }} .rating-row {
+    display: inline-flex !important;
     align-items: center !important;
     justify-content: flex-start !important;
     text-align: left !important;
     gap: 6px !important;
     margin: 4px 0 8px !important;
+    line-height: 1 !important;
+  }
+  #collection-{{ section.id }} .rating-row .rating {
+    display: inline-flex !important;
+    align-items: center !important;
+    margin: 0 !important;
+    line-height: 1 !important;
   }
   #collection-{{ section.id }} .rating-star {
     --color-rating-star: #D99B20 !important;
     letter-spacing: 2px !important;
     font-size: 13.5px !important;
     display: inline-block !important;
+    line-height: 1 !important;
   }
   #collection-{{ section.id }} .rating-star::before {
     color: #D99B20 !important;
@@ -182,11 +190,12 @@
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
   }
-  #collection-{{ section.id }} .rating-count {
+  #collection-{{ section.id }} .rating-row .rating-count {
     color: rgba(87, 35, 15, 0.65) !important;
     font-size: 12.5px !important;
     font-weight: 600 !important;
     margin: 0 !important;
+    line-height: 1 !important;
     display: inline-block !important;
   }
 
@@ -220,43 +229,143 @@
     font-weight: 500 !important;
   }
 
-  /* Action Button (Add to Cart / Choose Options) */
-  #collection-{{ section.id }} .quick-add {
-    margin: 4px 0 0 !important;
-    width: 100% !important;
+  /* Favorite / Wishlist Heart Button */
+  #collection-{{ section.id }} .card__fav-btn {
+    position: absolute !important;
+    top: 12px !important;
+    right: 12px !important;
+    z-index: 4 !important;
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 50% !important;
+    background: rgba(255, 255, 255, 0.92) !important;
+    backdrop-filter: blur(4px) !important;
+    -webkit-backdrop-filter: blur(4px) !important;
+    border: 1px solid rgba(87, 35, 15, 0.1) !important;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08) !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
   }
-  #collection-{{ section.id }} .quick-add modal-opener,
-  #collection-{{ section.id }} .quick-add product-form {
+  #collection-{{ section.id }} .card__fav-btn:hover {
+    transform: scale(1.12) !important;
+    box-shadow: 0 5px 14px rgba(87, 35, 15, 0.15) !important;
+    background: #FFFFFF !important;
+  }
+  #collection-{{ section.id }} .card__fav-btn .heart-icon {
+    width: 19px !important;
+    height: 19px !important;
+    transition: all 0.2s ease !important;
+  }
+  #collection-{{ section.id }} .card__fav-btn .heart-icon--empty {
+    stroke: #57230F !important;
+    display: block !important;
+  }
+  #collection-{{ section.id }} .card__fav-btn .heart-icon--filled {
+    display: none !important;
+  }
+  #collection-{{ section.id }} .card__fav-btn.active {
+    background: #FFFFFF !important;
+    border-color: #D99B20 !important;
+  }
+  #collection-{{ section.id }} .card__fav-btn.active .heart-icon--empty {
+    display: none !important;
+  }
+  #collection-{{ section.id }} .card__fav-btn.active .heart-icon--filled {
+    display: block !important;
+    animation: heartBeat 0.3s ease-in-out !important;
+  }
+  @keyframes heartBeat {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.25); }
+    100% { transform: scale(1); }
+  }
+
+  /* Dual Action Buttons: ADD TO CART & BUY NOW */
+  #collection-{{ section.id }} .card__actions {
+    width: 100% !important;
+    margin-top: 4px !important;
+  }
+  #collection-{{ section.id }} .card__actions-buttons {
+    display: flex !important;
+    gap: 10px !important;
+    width: 100% !important;
+    align-items: stretch !important;
+  }
+  #collection-{{ section.id }} .card__action-add-to-cart,
+  #collection-{{ section.id }} .quick-add {
+    flex: 1 1 50% !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+  #collection-{{ section.id }} .card__action-add-to-cart modal-opener,
+  #collection-{{ section.id }} .card__action-add-to-cart product-form {
     display: block !important;
     width: 100% !important;
+    height: 100% !important;
   }
   #collection-{{ section.id }} .quick-add__submit {
     width: 100% !important;
-    background-color: {{ section.settings.card_button_bg | default: '#57230F' }} !important;
-    color: #FFFFFF !important;
-    border: 1px solid {{ section.settings.card_button_bg | default: '#57230F' }} !important;
+    height: 100% !important;
+    min-height: 44px !important;
+    background-color: transparent !important;
+    color: #57230F !important;
+    border: 1.5px solid #57230F !important;
     border-radius: 10px !important;
     font-weight: 700 !important;
-    font-size: 13.5px !important;
-    letter-spacing: 0.06em !important;
+    font-size: 13px !important;
+    letter-spacing: 0.05em !important;
     text-transform: uppercase !important;
-    padding: 13px 20px !important;
-    min-height: 46px !important;
-    margin-top: 2px !important;
-    box-shadow: 0 4px 12px rgba(87, 35, 15, 0.12) !important;
+    padding: 10px 14px !important;
     cursor: pointer !important;
     transition: all 0.25s ease !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
+    box-shadow: none !important;
   }
   #collection-{{ section.id }} .quick-add__submit:hover {
-    background-color: {{ section.settings.card_button_hover | default: '#D99B20' }} !important;
-    border-color: {{ section.settings.card_button_hover | default: '#D99B20' }} !important;
+    background-color: #57230F !important;
+    color: #FFFFFF !important;
+    border-color: #57230F !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(87, 35, 15, 0.2) !important;
+  }
+
+  /* BUY NOW Button (Links directly to full product page) */
+  #collection-{{ section.id }} .card__btn-buy-now {
+    flex: 1 1 50% !important;
+    width: 100% !important;
+    min-height: 44px !important;
+    background-color: #57230F !important;
+    color: #FFFFFF !important;
+    border: 1.5px solid #57230F !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+    letter-spacing: 0.05em !important;
+    text-transform: uppercase !important;
+    padding: 10px 14px !important;
+    cursor: pointer !important;
+    transition: all 0.25s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-decoration: none !important;
+    box-shadow: 0 4px 12px rgba(87, 35, 15, 0.15) !important;
+    box-sizing: border-box !important;
+  }
+  #collection-{{ section.id }} .card__btn-buy-now:hover {
+    background-color: #D99B20 !important;
+    border-color: #D99B20 !important;
     color: #FFFFFF !important;
     transform: translateY(-2px) !important;
-    box-shadow: 0 6px 18px rgba(217, 155, 32, 0.3) !important;
+    box-shadow: 0 6px 16px rgba(217, 155, 32, 0.3) !important;
   }
+
   #collection-{{ section.id }} .card__badge .badge {
     background-color: #57230F;
     color: #FFFFFF;
@@ -287,10 +396,29 @@
     #collection-{{ section.id }} .price-item--sale {
       font-size: 1.55rem !important;
     }
-    #collection-{{ section.id }} .quick-add__submit {
-      padding: 10px 12px !important;
-      font-size: 12px !important;
-      min-height: 40px !important;
+    #collection-{{ section.id }} .card__fav-btn {
+      width: 32px !important;
+      height: 32px !important;
+      top: 8px !important;
+      right: 8px !important;
+    }
+    #collection-{{ section.id }} .card__fav-btn .heart-icon {
+      width: 16px !important;
+      height: 16px !important;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    #collection-{{ section.id }} .card__actions-buttons {
+      flex-direction: column !important;
+      gap: 6px !important;
+    }
+    #collection-{{ section.id }} .quick-add__submit,
+    #collection-{{ section.id }} .card__btn-buy-now {
+      width: 100% !important;
+      font-size: 11.5px !important;
+      padding: 9px 10px !important;
+      min-height: 38px !important;
       border-radius: 8px !important;
     }
   }
@@ -472,6 +600,70 @@
     {%- endif -%}
   </div>
 </div>
+
+<script>
+  (function() {
+    function getFavorites() {
+      try {
+        return JSON.parse(localStorage.getItem('hd_fav_products') || '[]');
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveFavorites(favs) {
+      try {
+        localStorage.setItem('hd_fav_products', JSON.stringify(favs));
+      } catch (e) {}
+    }
+
+    function updateFavButtons() {
+      var favs = getFavorites();
+      document.querySelectorAll('.card__fav-btn').forEach(function(btn) {
+        var id = btn.getAttribute('data-product-id');
+        if (id && favs.indexOf(id) > -1) {
+          btn.classList.add('active');
+          btn.setAttribute('aria-pressed', 'true');
+        } else {
+          btn.classList.remove('active');
+          btn.setAttribute('aria-pressed', 'false');
+        }
+      });
+    }
+
+    if (!window.HussainDairyFavListener) {
+      window.HussainDairyFavListener = true;
+      document.addEventListener('click', function(e) {
+        var btn = e.target.closest('.card__fav-btn');
+        if (!btn) return;
+        e.preventDefault();
+        e.stopPropagation();
+
+        var id = btn.getAttribute('data-product-id');
+        if (!id) return;
+
+        var favs = getFavorites();
+        var idx = favs.indexOf(id);
+        if (idx > -1) {
+          favs.splice(idx, 1);
+          btn.classList.remove('active');
+          btn.setAttribute('aria-pressed', 'false');
+        } else {
+          favs.push(id);
+          btn.classList.add('active');
+          btn.setAttribute('aria-pressed', 'true');
+        }
+        saveFavorites(favs);
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', updateFavButtons);
+    } else {
+      updateFavButtons();
+    }
+  })();
+</script>
 
 {% schema %}
 {
