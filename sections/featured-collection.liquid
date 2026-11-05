@@ -82,80 +82,217 @@
     }
   {%- endif -%}
 
-  /* Hussain Dairy Card Enhancements */
+  /* Hussain Dairy Card Enhancements (Image 2 Modern D2C Format) */
   #collection-{{ section.id }} .card-wrapper {
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-    border-radius: 16px;
+    background: transparent !important;
+    border-radius: 20px;
+    transition: transform 0.25s ease;
   }
   #collection-{{ section.id }} .card-wrapper:hover {
-    transform: translateY(-4px);
+    transform: translateY(-3px);
   }
   #collection-{{ section.id }} .card {
-    background-color: {{ section.settings.card_bg | default: '#F8F3E5' }};
-    border: 1px solid rgba(87, 35, 15, 0.09);
-    border-radius: 16px;
-    box-shadow: 0 4px 14px rgba(87, 35, 15, 0.04);
-    transition: all 0.25s ease;
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
   }
-  #collection-{{ section.id }} .card-wrapper:hover .card {
-    border-color: rgba(87, 35, 15, 0.2);
-    box-shadow: 0 10px 24px rgba(87, 35, 15, 0.1);
-  }
+
+  /* Standalone Rounded Image Tile */
   #collection-{{ section.id }} .card__inner {
-    border-radius: 14px 14px 0 0;
-    background: #ffffff;
-    overflow: hidden;
+    border-radius: 20px !important;
+    background: #FFFFFF !important;
+    border: 1px solid rgba(87, 35, 15, 0.08) !important;
+    box-shadow: 0 4px 16px rgba(87, 35, 15, 0.04) !important;
+    overflow: hidden !important;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease !important;
+    position: relative !important;
+  }
+  #collection-{{ section.id }} .card-wrapper:hover .card__inner {
+    border-color: rgba(217, 155, 32, 0.35) !important;
+    box-shadow: 0 10px 24px rgba(87, 35, 15, 0.1) !important;
+  }
+  #collection-{{ section.id }} .card__media {
+    border-radius: 20px !important;
+    overflow: hidden !important;
+  }
+  #collection-{{ section.id }} .card__media .media {
+    border-radius: 20px !important;
+    background: transparent !important;
+  }
+  #collection-{{ section.id }} .card__media img {
+    transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+  }
+  #collection-{{ section.id }} .card-wrapper:hover .card__media img {
+    transform: scale(1.04) !important;
+  }
+
+  /* Left-Aligned Information Area */
+  #collection-{{ section.id }} .card__content {
+    padding: 14px 2px 0 !important;
+    text-align: left !important;
+  }
+  #collection-{{ section.id }} .card__information {
+    padding: 0 !important;
+    text-align: left !important;
+  }
+  #collection-{{ section.id }} .card-information {
+    text-align: left !important;
+    margin-top: 4px !important;
+  }
+
+  /* Product Title */
+  #collection-{{ section.id }} .card__heading {
+    text-align: left !important;
+    margin: 0 0 6px !important;
   }
   #collection-{{ section.id }} .card__heading a {
-    color: #57230F;
-    font-weight: 700;
-    font-size: 19px;
-    line-height: 1.3;
-    transition: color 0.2s ease;
+    color: #57230F !important;
+    font-family: var(--font-heading-family, inherit) !important;
+    font-weight: 700 !important;
+    font-size: 1.85rem !important;
+    line-height: 1.3 !important;
+    text-align: left !important;
+    display: inline-block !important;
+    text-decoration: none !important;
+    transition: color 0.2s ease !important;
   }
   #collection-{{ section.id }} .card__heading a:hover {
-    color: #D99B20;
+    color: #D99B20 !important;
+  }
+
+  /* Rating Stars & Count */
+  #collection-{{ section.id }} .rating {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+    gap: 6px !important;
+    margin: 4px 0 8px !important;
+  }
+  #collection-{{ section.id }} .rating-star {
+    --color-rating-star: #D99B20 !important;
+    letter-spacing: 2px !important;
+    font-size: 13.5px !important;
+    display: inline-block !important;
+  }
+  #collection-{{ section.id }} .rating-star::before {
+    color: #D99B20 !important;
+    background: linear-gradient(90deg, #D99B20 var(--percent), rgba(217, 155, 32, 0.25) var(--percent)) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+  }
+  #collection-{{ section.id }} .rating-count {
+    color: rgba(87, 35, 15, 0.65) !important;
+    font-size: 12.5px !important;
+    font-weight: 600 !important;
+    margin: 0 !important;
+    display: inline-block !important;
+  }
+
+  /* Price */
+  #collection-{{ section.id }} .price {
+    text-align: left !important;
+    justify-content: flex-start !important;
+    margin-bottom: 12px !important;
+  }
+  #collection-{{ section.id }} .price__container {
+    text-align: left !important;
+    justify-content: flex-start !important;
+  }
+  #collection-{{ section.id }} .price__regular {
+    text-align: left !important;
+    display: flex !important;
+    align-items: baseline !important;
+    justify-content: flex-start !important;
+    gap: 6px !important;
   }
   #collection-{{ section.id }} .price-item--regular,
   #collection-{{ section.id }} .price-item--sale {
-    color: #57230F;
-    font-weight: 800;
-    font-size: 19px;
+    color: #57230F !important;
+    font-weight: 800 !important;
+    font-size: 1.85rem !important;
+    letter-spacing: -0.01em !important;
   }
   #collection-{{ section.id }} s.price-item--regular {
-    color: #888888;
-    font-size: 14px;
-    font-weight: 500;
+    color: rgba(87, 35, 15, 0.45) !important;
+    font-size: 1.4rem !important;
+    font-weight: 500 !important;
+  }
+
+  /* Action Button (Add to Cart / Choose Options) */
+  #collection-{{ section.id }} .quick-add {
+    margin: 4px 0 0 !important;
+    width: 100% !important;
+  }
+  #collection-{{ section.id }} .quick-add modal-opener,
+  #collection-{{ section.id }} .quick-add product-form {
+    display: block !important;
+    width: 100% !important;
   }
   #collection-{{ section.id }} .quick-add__submit {
+    width: 100% !important;
     background-color: {{ section.settings.card_button_bg | default: '#57230F' }} !important;
-    color: #ffffff !important;
-    border: 2px solid {{ section.settings.card_button_bg | default: '#57230F' }} !important;
-    border-radius: 30px !important;
+    color: #FFFFFF !important;
+    border: 1px solid {{ section.settings.card_button_bg | default: '#57230F' }} !important;
+    border-radius: 10px !important;
     font-weight: 700 !important;
     font-size: 13.5px !important;
     letter-spacing: 0.06em !important;
     text-transform: uppercase !important;
-    padding: 12px 24px !important;
-    margin-top: 14px !important;
-    box-shadow: 0 4px 12px rgba(87, 35, 15, 0.15) !important;
+    padding: 13px 20px !important;
+    min-height: 46px !important;
+    margin-top: 2px !important;
+    box-shadow: 0 4px 12px rgba(87, 35, 15, 0.12) !important;
+    cursor: pointer !important;
     transition: all 0.25s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
   #collection-{{ section.id }} .quick-add__submit:hover {
     background-color: {{ section.settings.card_button_hover | default: '#D99B20' }} !important;
     border-color: {{ section.settings.card_button_hover | default: '#D99B20' }} !important;
-    color: #ffffff !important;
+    color: #FFFFFF !important;
     transform: translateY(-2px) !important;
     box-shadow: 0 6px 18px rgba(217, 155, 32, 0.3) !important;
   }
   #collection-{{ section.id }} .card__badge .badge {
     background-color: #57230F;
-    color: #ffffff;
+    color: #FFFFFF;
     font-size: 11px;
     font-weight: 700;
     padding: 5px 12px;
     border-radius: 20px;
     border: none;
+  }
+
+  /* Responsive Grid Adjustments */
+  @media screen and (max-width: 749px) {
+    #collection-{{ section.id }} .product-grid {
+      column-gap: 14px !important;
+      row-gap: 24px !important;
+    }
+    #collection-{{ section.id }} .card__inner {
+      border-radius: 14px !important;
+    }
+    #collection-{{ section.id }} .card__media,
+    #collection-{{ section.id }} .card__media .media {
+      border-radius: 14px !important;
+    }
+    #collection-{{ section.id }} .card__heading a {
+      font-size: 1.55rem !important;
+    }
+    #collection-{{ section.id }} .price-item--regular,
+    #collection-{{ section.id }} .price-item--sale {
+      font-size: 1.55rem !important;
+    }
+    #collection-{{ section.id }} .quick-add__submit {
+      padding: 10px 12px !important;
+      font-size: 12px !important;
+      min-height: 40px !important;
+      border-radius: 8px !important;
+    }
   }
 {%- endstyle -%}
 
