@@ -574,7 +574,7 @@
   }
 }
 
-/* --- Mobile Layout (< 750px): Clean Single Column Stack --- */
+/* --- Mobile Layout (< 750px): Responsive 2-Column Grid for Menus, Stacked Brand & Newsletter --- */
 @media screen and (max-width: 749px) {
   .footer__content-top {
     padding-top: 3rem !important;
@@ -584,9 +584,12 @@
   }
 
   .footer__content-top .footer__blocks-wrapper {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 32px !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    column-gap: 16px !important;
+    row-gap: 32px !important;
+    margin: 0 !important;
+    align-items: start !important;
   }
 
   .footer__content-top .footer__blocks-wrapper .footer-block.grid__item {
@@ -594,12 +597,26 @@
     max-width: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
+    box-sizing: border-box !important;
+    grid-column: 1 / -1 !important;
+  }
+
+  /* Align Quick links and Policies horizontally side-by-side in front of each other */
+  .footer__content-top .footer__blocks-wrapper .footer-block.grid__item.footer-block--menu {
+    grid-column: span 1 !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
 
   .footer-block__heading {
     white-space: normal !important;
-    font-size: 1.65rem !important;
-    margin-bottom: 1.4rem !important;
+    font-size: 1.55rem !important;
+    margin-bottom: 1.2rem !important;
+  }
+
+  .footer-block__details-content .list-menu__item--link {
+    font-size: 1.35rem !important;
+    padding: 5px 0 !important;
   }
 
   .footer-block__newsletter .newsletter-form__field-wrapper {
@@ -647,8 +664,35 @@
 }
 
 /* --- Newsletter Field (Pill Style with Golden Accent) --- */
+.footer-block__newsletter .newsletter-form__field-wrapper,
+.footer-block__newsletter .newsletter-form {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
 .footer-block__newsletter .field {
   position: relative !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  border-radius: 30px !important;
+}
+
+/* Remove Dawn's double/outer border pseudo-elements completely */
+.footer-block__newsletter .field:before,
+.footer-block__newsletter .field:after,
+.footer-block__newsletter .field:hover.field:after,
+.footer-block__newsletter .field:focus-visible.field:after,
+.footer-block__newsletter .field:focus-within.field:after,
+.footer-block__newsletter .field:hover:after,
+.footer-block__newsletter .field:focus-visible:after,
+.footer-block__newsletter .field:focus-within:after {
+  content: none !important;
+  display: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  outline: none !important;
 }
 
 .footer-block__newsletter .field__input {
@@ -659,10 +703,13 @@
   padding: 1.2rem 5rem 1.2rem 2rem !important;
   height: 48px !important;
   font-size: 1.4rem !important;
+  box-shadow: none !important;
+  outline: none !important;
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease !important;
 }
 
-.footer-block__newsletter .field__input:focus {
+.footer-block__newsletter .field__input:focus,
+.footer-block__newsletter .field__input:focus-visible {
   background: rgba(255, 255, 255, 0.12) !important;
   border-color: #D99B20 !important;
   box-shadow: 0 0 0 3px rgba(217, 155, 32, 0.25) !important;
