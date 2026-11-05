@@ -1,115 +1,194 @@
-/* Hussain Dairy - Contact Form Card Styling */
-.contact.page-width--narrow {
-  max-width: 760px;
-  margin: 0 auto;
-}
-
-.contact {
-  background: #ffffff;
-  border: 1.5px solid rgba(87, 35, 15, 0.1);
-  border-radius: 20px;
-  padding: 44px 38px;
-  box-shadow: 0 10px 30px rgba(87, 35, 15, 0.06);
-  box-sizing: border-box;
-}
-
-.contact .title {
-  text-align: center;
-  color: #57230F;
-  font-family: var(--font-heading-family, inherit);
-  font-size: 32px;
-  font-weight: 800;
-  margin: 0 0 10px 0;
-  letter-spacing: -0.01em;
-}
-
-.contact__subtitle {
-  text-align: center;
-  color: #666666;
-  font-size: 15px;
-  margin: 0 auto 28px auto;
-  max-width: 520px;
-  line-height: 1.5;
-}
-
-.contact .field {
-  margin-bottom: 18px;
-}
-
-.contact .field__input {
-  border-radius: 12px !important;
-  border: 1.5px solid rgba(87, 35, 15, 0.18) !important;
-  background-color: #FAF8F5 !important;
-  color: #222222 !important;
-  font-size: 15px !important;
-  padding: 14px 18px !important;
-  transition: all 0.25s ease !important;
-}
-
-.contact .field__input:focus {
-  border-color: #D99B20 !important;
-  box-shadow: 0 0 0 3px rgba(217, 155, 32, 0.15) !important;
-  background-color: #ffffff !important;
-  outline: none !important;
-}
-
-.contact .field__label {
-  color: #777777 !important;
-  font-size: 14px !important;
-}
-
-.contact .text-area {
-  min-height: 130px !important;
-}
-
-.contact__button {
-  margin-top: 24px;
-  text-align: center;
-}
-
-.contact__button .button {
-  width: 100% !important;
-  background-color: #57230F !important;
-  color: #ffffff !important;
-  border: 2px solid #57230F !important;
-  border-radius: 30px !important;
-  font-weight: 700 !important;
-  font-size: 15px !important;
-  letter-spacing: 0.06em !important;
-  text-transform: uppercase !important;
-  padding: 15px 30px !important;
-  cursor: pointer !important;
-  box-shadow: 0 4px 14px rgba(87, 35, 15, 0.18) !important;
-  transition: all 0.25s ease !important;
-}
-
-.contact__button .button:hover {
-  background-color: #D99B20 !important;
-  border-color: #D99B20 !important;
-  color: #ffffff !important;
-  transform: translateY(-2px) !important;
-  box-shadow: 0 6px 20px rgba(217, 155, 32, 0.35) !important;
-}
-
-@media screen and (min-width: 750px) {
-  .contact__fields {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-column-gap: 20px;
-  }
-}
-
-@media screen and (max-width: 749px) {
-  .contact {
-    padding: 30px 20px;
-    border-radius: 16px;
-    margin: 0 16px;
-  }
-  .contact .title {
-    font-size: 25px;
-  }
-  .contact__subtitle {
-    font-size: 13.5px;
-    margin-bottom: 20px;
-  }
-}
+/* ============================================================
+   Hussain Dairy — Contact Form  (Get in Touch)
+   Polished card UI · floating-label safe · no double borders
+   ============================================================ */
+
+/* ---- Card wrapper ---- */
+.contact.page-width--narrow {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.contact {
+  background: #ffffff;
+  border: none !important;                    /* remove black outer border */
+  border-radius: 24px;
+  padding: 52px 44px 44px;
+  box-shadow: 0 8px 40px rgba(87, 35, 15, 0.09), 0 2px 8px rgba(87, 35, 15, 0.05);
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle warm accent line at top of card */
+.contact::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #57230F 0%, #D99B20 50%, #57230F 100%);
+  border-radius: 24px 24px 0 0;
+}
+
+/* ---- Heading ---- */
+.contact .title {
+  text-align: center;
+  color: #57230F;
+  font-family: var(--font-heading-family, inherit);
+  font-size: 32px;
+  font-weight: 800;
+  margin: 0 0 10px 0;
+  letter-spacing: -0.01em;
+}
+
+/* ---- Subtitle ---- */
+.contact__subtitle {
+  text-align: center;
+  color: #888;
+  font-size: 15px;
+  margin: 0 auto 32px auto;
+  max-width: 520px;
+  line-height: 1.6;
+}
+
+/* ---- Fields spacing ---- */
+.contact .field {
+  margin-bottom: 20px;
+  position: relative;
+}
+
+/* ---- Input / Textarea ---- */
+.contact .field__input {
+  border-radius: 14px !important;
+  border: 1.5px solid rgba(87, 35, 15, 0.16) !important;
+  background-color: #FAF8F5 !important;
+  color: #222222 !important;
+  font-size: 15px !important;
+  /* Dawn floating-label needs top-heavy padding when filled */
+  padding: 2.2rem 1.6rem 0.8rem 1.6rem !important;
+  transition: all 0.25s ease !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Remove Dawn's pseudo-element double border on .field */
+.contact .field:before,
+.contact .field:after,
+.contact .field:hover:after,
+.contact .field:focus-within:after,
+.contact .field:focus-visible:after {
+  content: none !important;
+  display: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* Focus glow */
+.contact .field__input:focus,
+.contact .field__input:focus-visible {
+  border-color: #D99B20 !important;
+  box-shadow: 0 0 0 3px rgba(217, 155, 32, 0.15) !important;
+  background-color: #ffffff !important;
+  outline: none !important;
+}
+
+/* ---- Floating label ---- */
+.contact .field__label {
+  color: #999 !important;
+  font-size: 1.5rem !important;
+  /* resting position: vertically centered in the tall input */
+  top: 1.4rem !important;
+  left: 1.6rem !important;
+  position: absolute !important;
+  pointer-events: none !important;
+  transition: top 0.18s ease, font-size 0.18s ease, color 0.18s ease !important;
+}
+
+/* When input has content or is focused, float label up */
+.contact .field__input:focus ~ .field__label,
+.contact .field__input:not(:placeholder-shown) ~ .field__label {
+  top: 0.5rem !important;
+  font-size: 1.1rem !important;
+  color: #D99B20 !important;
+}
+
+/* Textarea: resting label at top */
+.contact .text-area ~ .field__label,
+.contact .text-area.form__label ~ .field__label {
+  top: 1.4rem !important;
+}
+
+.contact .text-area {
+  min-height: 140px !important;
+  resize: none !important;
+}
+
+/* ---- Send button ---- */
+.contact__button {
+  margin-top: 28px;
+  text-align: center;
+}
+
+.contact__button .button {
+  width: 100% !important;
+  background: linear-gradient(135deg, #57230F 0%, #7a3015 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 14px !important;
+  font-weight: 700 !important;
+  font-size: 15px !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  padding: 16px 30px !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 18px rgba(87, 35, 15, 0.22) !important;
+  transition: all 0.25s ease !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.contact__button .button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 50%, rgba(217, 155, 32, 0.15) 100%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.contact__button .button:hover {
+  background: linear-gradient(135deg, #D99B20 0%, #c48a18 100%) !important;
+  border-color: transparent !important;
+  color: #ffffff !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 24px rgba(217, 155, 32, 0.38) !important;
+}
+
+.contact__button .button:hover::after {
+  opacity: 1;
+}
+
+/* ---- Two-column layout on tablet+ ---- */
+@media screen and (min-width: 750px) {
+  .contact__fields {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-column-gap: 20px;
+  }
+}
+
+/* ---- Mobile ---- */
+@media screen and (max-width: 749px) {
+  .contact {
+    padding: 36px 20px 28px;
+    border-radius: 18px;
+    margin: 0 12px;
+  }
+  .contact .title {
+    font-size: 26px;
+  }
+  .contact__subtitle {
+    font-size: 13.5px;
+    margin-bottom: 22px;
+  }
+}
