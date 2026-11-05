@@ -139,6 +139,10 @@
   padding: 1.3rem 1rem;
 }
 
+.card__actions {
+  grid-row-start: 3;
+}
+
 .card:not(.ratio) > .card__content {
   grid-template-rows: max-content minmax(0, 1fr) max-content auto;
 }
