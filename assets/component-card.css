@@ -597,3 +597,12 @@
     clip-path: polygon(var(--shape--blob-5));
   }
 }
+
+/* Prevent duplicate review stars (Trustoo app badge + native rating) */
+.card-information:has([class*="trustoo"], [class*="cwilltrustoo"], .tt-rating-box, [data-trustoo-star-widget]) .rating-row,
+.card-information [class*="trustoo"] ~ .rating-row,
+.card-information [class*="cwilltrustoo"] ~ .rating-row,
+.card-information .rating-row ~ [class*="trustoo"],
+.card-information .rating-row ~ [class*="cwilltrustoo"] {
+  display: none !important;
+}
