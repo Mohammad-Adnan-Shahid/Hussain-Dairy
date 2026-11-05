@@ -70,14 +70,14 @@
     "announcement_bar_hJDeaP": {
       "type": "announcement-bar",
       "blocks": {
-        "announcement_3hKN93": {
+        "announcement_ABiDmD": {
           "type": "announcement",
           "settings": {
-            "text": "Welcome to our store",
+            "text": "Welcome to Hussain Dairy",
             "link": ""
           }
         },
-        "announcement_JRXnqN": {
+        "announcement_3hKN93": {
           "type": "announcement",
           "settings": {
             "text": "Welcome to our store",
@@ -86,8 +86,8 @@
         }
       },
       "block_order": [
-        "announcement_3hKN93",
-        "announcement_JRXnqN"
+        "announcement_ABiDmD",
+        "announcement_3hKN93"
       ],
       "name": "t:sections.announcement-bar.presets.name",
       "settings": {
