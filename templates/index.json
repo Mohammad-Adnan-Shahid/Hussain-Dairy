@@ -275,8 +275,7 @@
         "full_width": true,
         "padding_top": 20,
         "padding_bottom": 20
-      },
-      "disabled": false
+      }
     },
     "featured_collection": {
       "type": "featured-collection",
@@ -288,6 +287,10 @@
         "description": "",
         "show_description": false,
         "description_style": "body",
+        "products_alignment": "center",
+        "card_bg": "#F8F3E5",
+        "card_button_bg": "#57230F",
+        "card_button_hover": "#D99B20",
         "columns_desktop": 2,
         "enable_desktop_slider": false,
         "full_width": false,
@@ -303,13 +306,8 @@
         "columns_mobile": "2",
         "swipe_on_mobile": false,
         "padding_top": 0,
-        "padding_bottom": 20,
-        "products_alignment": "center",
-        "card_bg": "#F8F3E5",
-        "card_button_bg": "#57230F",
-        "card_button_hover": "#D99B20"
-      },
-      "disabled": false
+        "padding_bottom": 20
+      }
     },
     "17864694504f3c66ec": {
       "type": "apps",
@@ -358,7 +356,7 @@
         "caption_TmJYHp": {
           "type": "caption",
           "settings": {
-            "caption": "OUR HERITAGE \u2014",
+            "caption": "OUR HERITAGE —",
             "text_style": "caption-with-letter-spacing",
             "text_size": "medium"
           }
@@ -408,11 +406,11 @@
       "name": "t:sections.contact-form.presets.name",
       "settings": {
         "heading": "Get in Touch",
+        "subtitle": "Have questions about our pure desi ghee, your order, or delivery? Reach out to us anytime.",
         "heading_size": "h1",
         "color_scheme": "",
         "padding_top": 36,
-        "padding_bottom": 36,
-        "subtitle": "Have questions about our pure desi ghee, your order, or delivery? Reach out to us anytime."
+        "padding_bottom": 36
       }
     },
     "custom_liquid_zBtLpM": {
