@@ -129,12 +129,16 @@
 
   /* Left-Aligned Information Area */
   #collection-{{ section.id }} .card__content {
+    display: flex !important;
+    flex-direction: column !important;
     padding: 14px 2px 0 !important;
     text-align: left !important;
+    flex-grow: 1 !important;
   }
   #collection-{{ section.id }} .card__information {
     padding: 0 !important;
     text-align: left !important;
+    order: 1 !important;
   }
   #collection-{{ section.id }} .card-information {
     text-align: left !important;
@@ -284,60 +288,16 @@
     100% { transform: scale(1); }
   }
 
-  /* Dual Action Buttons: ADD TO CART & BUY NOW */
+  /* Action Buttons Area - BUY NOW at Last */
   #collection-{{ section.id }} .card__actions {
     width: 100% !important;
-    margin-top: 4px !important;
-  }
-  #collection-{{ section.id }} .card__actions-buttons {
-    display: flex !important;
-    gap: 10px !important;
-    width: 100% !important;
-    align-items: stretch !important;
-  }
-  #collection-{{ section.id }} .card__action-add-to-cart,
-  #collection-{{ section.id }} .quick-add {
-    flex: 1 1 50% !important;
-    width: 100% !important;
-    margin: 0 !important;
-  }
-  #collection-{{ section.id }} .card__action-add-to-cart modal-opener,
-  #collection-{{ section.id }} .card__action-add-to-cart product-form {
-    display: block !important;
-    width: 100% !important;
-    height: 100% !important;
-  }
-  #collection-{{ section.id }} .quick-add__submit {
-    width: 100% !important;
-    height: 100% !important;
-    min-height: 44px !important;
-    background-color: transparent !important;
-    color: #57230F !important;
-    border: 1.5px solid #57230F !important;
-    border-radius: 10px !important;
-    font-weight: 700 !important;
-    font-size: 13px !important;
-    letter-spacing: 0.05em !important;
-    text-transform: uppercase !important;
-    padding: 10px 14px !important;
-    cursor: pointer !important;
-    transition: all 0.25s ease !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    box-shadow: none !important;
-  }
-  #collection-{{ section.id }} .quick-add__submit:hover {
-    background-color: #57230F !important;
-    color: #FFFFFF !important;
-    border-color: #57230F !important;
-    transform: translateY(-2px) !important;
-    box-shadow: 0 4px 12px rgba(87, 35, 15, 0.2) !important;
+    margin-top: auto !important;
+    padding-top: 10px !important;
+    order: 2 !important;
   }
 
   /* BUY NOW Button (Links directly to full product page) */
   #collection-{{ section.id }} .card__btn-buy-now {
-    flex: 1 1 50% !important;
     width: 100% !important;
     min-height: 44px !important;
     background-color: #57230F !important;
@@ -345,10 +305,10 @@
     border: 1.5px solid #57230F !important;
     border-radius: 10px !important;
     font-weight: 700 !important;
-    font-size: 13px !important;
-    letter-spacing: 0.05em !important;
+    font-size: 13.5px !important;
+    letter-spacing: 0.06em !important;
     text-transform: uppercase !important;
-    padding: 10px 14px !important;
+    padding: 12px 20px !important;
     cursor: pointer !important;
     transition: all 0.25s ease !important;
     display: flex !important;
@@ -376,11 +336,27 @@
     border: none;
   }
 
-  /* Responsive Grid Adjustments */
+  /* Mobile Layout (< 750px): 2 Horizontal Side-by-Side Products & Scaled Responsiveness */
   @media screen and (max-width: 749px) {
     #collection-{{ section.id }} .product-grid {
-      column-gap: 14px !important;
-      row-gap: 24px !important;
+      display: flex !important;
+      flex-wrap: wrap !important;
+      flex-direction: row !important;
+      justify-content: space-between !important;
+      column-gap: 10px !important;
+      row-gap: 20px !important;
+      padding-left: 1.2rem !important;
+      padding-right: 1.2rem !important;
+      margin: 0 !important;
+      width: 100% !important;
+    }
+    #collection-{{ section.id }} .product-grid .grid__item {
+      width: calc(50% - 5px) !important;
+      max-width: calc(50% - 5px) !important;
+      flex: 0 0 calc(50% - 5px) !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      box-sizing: border-box !important;
     }
     #collection-{{ section.id }} .card__inner {
       border-radius: 14px !important;
@@ -389,37 +365,58 @@
     #collection-{{ section.id }} .card__media .media {
       border-radius: 14px !important;
     }
+    #collection-{{ section.id }} .card__content {
+      padding: 10px 0 0 !important;
+    }
     #collection-{{ section.id }} .card__heading a {
-      font-size: 1.55rem !important;
+      font-size: 1.4rem !important;
+      line-height: 1.25 !important;
+      margin-bottom: 2px !important;
+    }
+    #collection-{{ section.id }} .rating-row {
+      gap: 3px !important;
+      margin: 2px 0 4px !important;
+    }
+    #collection-{{ section.id }} .rating-star {
+      font-size: 10.5px !important;
+      letter-spacing: 0.5px !important;
+    }
+    #collection-{{ section.id }} .rating-row .rating-count {
+      font-size: 10.5px !important;
+    }
+    #collection-{{ section.id }} .price {
+      margin-bottom: 6px !important;
     }
     #collection-{{ section.id }} .price-item--regular,
     #collection-{{ section.id }} .price-item--sale {
-      font-size: 1.55rem !important;
+      font-size: 1.35rem !important;
+      font-weight: 800 !important;
+      line-height: 1.2 !important;
     }
-    #collection-{{ section.id }} .card__fav-btn {
-      width: 32px !important;
-      height: 32px !important;
-      top: 8px !important;
-      right: 8px !important;
+    #collection-{{ section.id }} .card__actions {
+      padding-top: 6px !important;
+      margin-top: auto !important;
+      order: 2 !important;
     }
-    #collection-{{ section.id }} .card__fav-btn .heart-icon {
-      width: 16px !important;
-      height: 16px !important;
-    }
-  }
-
-  @media screen and (max-width: 600px) {
-    #collection-{{ section.id }} .card__actions-buttons {
-      flex-direction: column !important;
-      gap: 6px !important;
-    }
-    #collection-{{ section.id }} .quick-add__submit,
     #collection-{{ section.id }} .card__btn-buy-now {
       width: 100% !important;
-      font-size: 11.5px !important;
-      padding: 9px 10px !important;
-      min-height: 38px !important;
+      min-height: 36px !important;
+      height: 36px !important;
+      padding: 8px 10px !important;
+      font-size: 11px !important;
+      letter-spacing: 0.05em !important;
       border-radius: 8px !important;
+      font-weight: 700 !important;
+    }
+    #collection-{{ section.id }} .card__fav-btn {
+      width: 28px !important;
+      height: 28px !important;
+      top: 6px !important;
+      right: 6px !important;
+    }
+    #collection-{{ section.id }} .card__fav-btn .heart-icon {
+      width: 14px !important;
+      height: 14px !important;
     }
   }
 {%- endstyle -%}
